@@ -6,31 +6,51 @@ export class Product{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     productName: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     productDescription: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     productTecDescription: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     productPrice: number;
     
-    @Column()
+    @Column({
+        nullable: false
+    })
     productVol: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     photoUrl: string;
+    @Column({
+        nullable: false
+    })
+    photoName: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     category: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     stock: number;
 
-    @Column()
+    @Column({nullable: true})
     quantityBuy: number | 0;
 
 
