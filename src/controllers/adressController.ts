@@ -8,18 +8,9 @@ import { AdressService } from '../service/adressService';
 import { Adress } from '../entity/adressEntity';
 
 
-const adressRoutes: Router = Router();
-/*
- * Checks whether the login already exists
- *
- * @Method GET
- * @URL /api/users/
- *
-*/
-adressRoutes
-    .route('/adress')
-    .post(
-    async (req: Request, res:Response) =>{
+
+class adressController{
+    public async storeAdress(req: Request, res: Response){
         try{
             let adressNew = new Adress();
             adressNew.zipcode = req.body.zipcode;
@@ -41,6 +32,6 @@ adressRoutes
                 })
         }
     }
-)
+}
 
-export default adressRoutes;
+export default new adressController();
