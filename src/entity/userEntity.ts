@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, Unique } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, Unique, OneToOne, JoinColumn } from 'typeorm';
+import {Adress} from './adressEntity';
 
 @Entity()
 export class User{
@@ -47,4 +48,7 @@ export class User{
       this.password = await bcrypt.hash(this.password, 10);
     }
 
+    @OneToOne(type => Adress, adress => adress.user)
+    @JoinColumn()
+    adress: Adress;
 }

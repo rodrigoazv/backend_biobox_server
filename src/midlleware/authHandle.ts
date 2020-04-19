@@ -1,24 +1,30 @@
 import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from 'express'
 
 import { User } from "../entity/userEntity";
+import * as dotenv from "dotenv";
+dotenv.config();
 
-import config from "../config/config";
-
-const { auth } = config;
 export class AuthHandler {
 
+    verifyToken (req: Request, res: Response){
+      const pickToken = req.header('token');
+      if(!pickToken) return console.log("deuruim")
+      console.log(process.env.SECRET_KEY)
+      const token = jwt.verify(pickToken, process.env.SECRET_KEY || 'token');
+      return res.json({
+        message: "pass"
+      })
+    }
 
-    superSecret = auth.secretKey;
-
-
-    generateToken(user: User): string {
+    generateToken(user: User){
         const token = jwt.sign(
           {
             id: user.id
           },
-          this.superSecret,
+          process.env.SECRET_KEY || 'token',
           {
-            expiresIn: "5d"
+            expiresIn: 1
           }
         );
     

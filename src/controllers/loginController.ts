@@ -19,14 +19,16 @@ class loginController{
             user.password
         )
         if(!user || !isPasswordCorrect){
-            res.send(404).json({
+            res.json({
                 sucess:false
             })
         }
-        const token: String = authHandle.generateToken(user);
-        res.send(200).json({
+        const token: string = authHandle.generateToken(user);
+        res.header('token-auth', token).json({
             sucess:true,
             token
         })
     }
 }
+
+export default new loginController();

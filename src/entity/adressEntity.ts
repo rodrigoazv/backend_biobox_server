@@ -1,4 +1,5 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, Unique } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, Unique, OneToOne } from 'typeorm';
+import { User } from './userEntity';
 
 @Entity()
 export class Adress{
@@ -7,6 +8,12 @@ export class Adress{
 
     @Column()
     zipcode: string;
+
+    @Column()
+    city: string;
+
+    @Column()
+    state: string;
 
     @Column()
     street: string;
@@ -22,5 +29,8 @@ export class Adress{
   
     @CreateDateColumn()
     createdDate: Date;
+
+    @OneToOne(type => User, user => user.adress)
+    user: User;
 
 }

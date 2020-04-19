@@ -28,12 +28,32 @@ export class UserService {
      });
     
    }
+   async getById(id: string ){     
+    return await this.userRepository.findOneOrFail({
+      where: {
+        id
+      }
+    });
+   
+  }
    
    async insertOne(data: User){  
      console.log("Create a new user", data);
      const newUser = this.userRepository.create(data);
      return await this.userRepository.save(newUser);   
  
+   }
+   
+   async setLastPresentLoggedDate(user: User){
+    const userId: User = this.userRepository.getId(user);
+
+    try {
+      return await this.userRepository.update(userId, {
+        lastPresentLoggedDate: new Date()
+      });
+    } catch (error) {
+      return Promise.reject(error);
+    }
    }
 
 
