@@ -5,6 +5,9 @@ import { ProductService } from '../service/productService';
 //import user entity
 import { Product } from '../entity/productEntity';
 
+interface File extends Request{
+    file:any,    
+}
 class productController {
     public async index(req: Request, res: Response): Promise<Response>{
         const userService = new ProductService();
@@ -14,6 +17,9 @@ class productController {
     }
 
     public async store(req: Request , res: Response){
+
+        const documentFile  = (req as File).file;
+        
         try{
             let productNew = new Product();
             productNew.productName = req.body.productName;
@@ -21,8 +27,8 @@ class productController {
             productNew.productTecDescription = req.body.productDescription;
             productNew.productVol = req.body.productVol;
             productNew.productPrice = req.body.productPrice;
-            productNew.photoUrl = req.file.location;
-            productNew.photoName = req.file.key;
+            productNew.photoUrl =  documentFile.location;
+            productNew.photoName = documentFile.key;
             productNew.category = req.body.category;
             productNew.stock = req.body.stock;
 
@@ -30,7 +36,7 @@ class productController {
             const productRepository  = getManager().getRepository(Product);
             productNew = productRepository.create(productNew);
             productNew = await productService.insertOneProduct(productNew);
-            res.json({
+            res.send(200).json({
                 message: "Produto cadastrado",
             })
         }catch{
