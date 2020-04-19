@@ -5,16 +5,21 @@ import { User } from "../entity/userEntity";
 import * as dotenv from "dotenv";
 dotenv.config();
 
+interface IPayload{
+  id: string,
+  iat: number
+}
+
 export class AuthHandler {
 
-    verifyToken (req: Request, res: Response){
+    verifyToken (req: Request, res: Response, next: NextFunction){
       const pickToken = req.header('token');
-      if(!pickToken) return console.log("deuruim")
-      console.log(process.env.SECRET_KEY)
-      const token = jwt.verify(pickToken, process.env.SECRET_KEY || 'token');
-      return res.json({
-        message: "pass"
+      if(!pickToken) return res.json({
+        err: 'acess danied'
       })
+      const payload = jwt.verify(pickToken, process.env.SECRET_KEY || 'token') as IPayload;
+      req.userId = payload.id;
+      next();
     }
 
     generateToken(user: User){
@@ -24,7 +29,7 @@ export class AuthHandler {
           },
           process.env.SECRET_KEY || 'token',
           {
-            expiresIn: 1
+            expiresIn: 60 * 60
           }
         );
     

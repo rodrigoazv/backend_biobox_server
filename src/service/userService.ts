@@ -28,10 +28,10 @@ export class UserService {
      });
     
    }
-   async getById(id: string ){     
+   async getById(id: string){     
     return await this.userRepository.findOneOrFail({
       where: {
-        id
+        id,
       }
     });
    

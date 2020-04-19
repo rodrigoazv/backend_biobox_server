@@ -24,7 +24,7 @@ export class User{
     @Column({ nullable: true })
     number: string;
 
-    @Column()
+    @Column({select: false})
     password: string;
   
     @CreateDateColumn()

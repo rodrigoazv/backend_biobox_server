@@ -2,14 +2,15 @@ import { Request, Response, Router } from 'express';
 import { getManager } from 'typeorm';
 //import service
 import { AdressService } from '../service/adressService';
-//import user entity
+//import adress entity
+import { Adress } from '../entity/adressEntity';
+import { User } from '../entity/userEntity';
+import { UserService} from '../service/userService';
 
-import { AuthHandler } from '../midlleware/authHandle';
-
-const authHandle = new AuthHandler();
 
 class demandController{
     public async registerUserAdress(req: Request, res: Response){
+        const userService = new UserService();
         /*const adress = new Adress();
         adress.zipcode = req.body.zipcode;
         adress.city = req.body.zipcode;
@@ -18,7 +19,11 @@ class demandController{
         adress.number = req.body.number;
         adress.complement = req.body.complement;
         adress.neighborhood = req.body.neighborhood;*/
-
+        const userId = await userService.getById(req.userId);
+        if(!userId) return res.json({
+            err: "sem user"
+        })
+        res.send(userId);
 
         
 
