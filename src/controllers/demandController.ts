@@ -1,33 +1,70 @@
 import { Request, Response, Router } from 'express';
-import { getManager } from 'typeorm';
 //import service
-import { AdressService } from '../service/adressService';
 //import adress entity
-import { Adress } from '../entity/adressEntity';
 import { User } from '../entity/userEntity';
 import { UserService} from '../service/userService';
+import { DemandService } from '../service/demandService';
+import { Demand } from '../entity/demandEntity';
+import { Product } from '../entity/productEntity';
+import { ProductService } from '../service/productService';
+
 
 
 class demandController{
+    public async index(req: Request, res: Response){
+        try{
+            const demandService = new DemandService();
+            const demand: Demand[] = await demandService.getAll();
+            return res.json(demand);
+        }catch(err){
+            res.json(err);
+        } 
+    }
     public async registerUserAdress(req: Request, res: Response){
-        const userService = new UserService();
-        /*const adress = new Adress();
-        adress.zipcode = req.body.zipcode;
-        adress.city = req.body.zipcode;
-        adress.state = req.body.state;
-        adress.street = req.body.street;
-        adress.number = req.body.number;
-        adress.complement = req.body.complement;
-        adress.neighborhood = req.body.neighborhood;*/
-        const userId = await userService.getById(req.userId);
-        if(!userId) return res.json({
-            err: "sem user"
-        })
-        res.send(userId);
-
+        try{
+            const userService = new UserService();
+            const userId = await userService.getById(req.userId);
+            if(!userId) return res.json({
+                err: "Usúario não encontrado"
+            })
+            return res.json(userId)
+    }   catch(erro){
+        res.json({erro})
+    }
         
+    }
+    public async sendOrder(req: Request, res: Response){
+       
+       try{ 
+            let demandNew = new Demand();
+            const userService = new UserService();
+            const demandService = new DemandService();
+
+            const userId: User = await userService.getById(req.body.userId);
+            
+            console.log(req.body.products)
+
+            const productsListFromCart: Product[] = req.body.products.map((data: Product )=> {
+                return data 
+            })
+
+            demandNew.products = productsListFromCart;
+            demandNew.user = userId;
+
+            demandNew = await demandService.insertOne(demandNew);
+
+            res.status(200).json({
+                demandNew
+            })
+       } 
+       catch{
+            res.status(404).json({
+                message:'deuruim'
+            })
+       }
 
     }
+    
 }
 
 export default new demandController();

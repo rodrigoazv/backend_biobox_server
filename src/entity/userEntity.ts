@@ -1,13 +1,16 @@
 import bcrypt from 'bcrypt';
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, Unique, OneToOne, JoinColumn } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, Unique, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import {Adress} from './adressEntity';
+import { Demand } from './demandEntity';
 
 @Entity()
 export class User{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column({
+      nullable:false
+    })
     completName: string;
 
     @Column({
@@ -15,16 +18,28 @@ export class User{
     })
     email: string;
 
-    @Column({ nullable: true })
+    @Column({
+      unique:true,
+      update:false,
+      nullable:false
+    })
     cpf: string;
 
-    @Column({ nullable: true })
+    @Column({
+      nullable:false
+    })
     dateNasc: Date;
 
-    @Column({ nullable: true })
+    @Column({
+      unique:true,
+      nullable:false
+    })
     number: string;
 
-    @Column({select: false})
+    @Column({
+      nullable:false,
+      select:false
+    })
     password: string;
   
     @CreateDateColumn()
@@ -48,7 +63,10 @@ export class User{
       this.password = await bcrypt.hash(this.password, 10);
     }
 
-    @OneToOne(type => Adress, adress => adress.user)
+    @OneToOne(type => Adress, adress => adress.user, {
+      cascade: true
+    })
     @JoinColumn()
     adress: Adress;
+
 }

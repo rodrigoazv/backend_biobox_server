@@ -5,29 +5,48 @@ import { User } from "../entity/userEntity";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-interface IPayload{
-  id: string,
-  iat: number
-}
 
 export class AuthHandler {
 
     verifyToken (req: Request, res: Response, next: NextFunction){
-      const pickToken = req.header('token');
-      if(!pickToken) return res.json({
-        err: 'acess danied'
-      })
-      const payload = jwt.verify(pickToken, process.env.SECRET_KEY || 'token') as IPayload;
-      req.userId = payload.id;
-      next();
-    }
-
+        const pickToken = <string>req.header('authorization');
+        console.log(req.header('authorization'))
+        if(!pickToken) {
+          return res.status(403).json({
+          auth: false,
+          err: 'no token',
+          
+        })}
+        try{
+        jwt.verify(pickToken, process.env.SECRET_KEY || 'authorization',(err: any, result:any)  => {
+            if(err){
+              return res.status(404).json({
+                  auth: false,
+                  message: 'invalid token'
+                })
+            }
+            if(!err){
+              return res.status(200).json({
+                auth: true,
+                message: 'Valid token'
+              })
+              req.userId = result.id;
+              next();
+          }
+        });
+      } catch {
+        res.status(404).json({
+          auth: false,
+          message: 'invalid token'
+      }
+      )}  
+}
     generateToken(user: User){
         const token = jwt.sign(
           {
             id: user.id
           },
-          process.env.SECRET_KEY || 'token',
+          process.env.SECRET_KEY || 'authorization',
           {
             expiresIn: 60 * 60
           }

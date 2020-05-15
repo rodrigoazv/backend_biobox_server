@@ -9,11 +9,24 @@ interface File extends Request{
     file:any,    
 }
 class productController {
-    public async index(req: Request, res: Response): Promise<Response>{
-        const userService = new ProductService();
-        const user: Product[] = await userService.getAll();
-        return res.json(user);
-
+    public async index(req: Request, res: Response): Promise<Response | undefined>{
+        try{
+            const userService = new ProductService();
+            const user: Product[] = await userService.getAll();
+            return res.json(user);
+        }catch{
+            res.json({message:"Ops, sem permissão para retornar todos os usuarios"})
+        }
+    }
+    public async indexId(req: Request, res: Response): Promise<Response | undefined>{
+        try{
+            console.log(req.params.id);
+            const userService = new ProductService();
+            const user: Product = await userService.getById(req.params.id);
+            return res.json(user);
+        }catch{
+            res.json({message:"Ops, sem permissão para retornar produto"})
+        }
     }
 
     public async store(req: Request , res: Response){
@@ -36,7 +49,7 @@ class productController {
             const productRepository  = getManager().getRepository(Product);
             productNew = productRepository.create(productNew);
             productNew = await productService.insertOneProduct(productNew);
-            res.send(200).json({
+            res.json({
                 message: "Produto cadastrado",
             })
         }catch{

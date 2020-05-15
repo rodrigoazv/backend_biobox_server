@@ -7,6 +7,8 @@ import { AdressService } from '../service/adressService';
 
 import { Adress } from '../entity/adressEntity';
 
+import cep from 'cep-promise';
+
 
 
 class adressController{
@@ -31,6 +33,21 @@ class adressController{
                     message:"erro",
                 })
         }
+    }
+    public async getCep (req: Request, res: Response) {
+        try{ 
+            console.log(req.params.zipcode)
+            const data = await cep(req.params.zipcode);
+            console.log(data)
+            res.status(200).json({
+                data
+            })}
+        catch(err){
+            res.status(404).json({
+                message: "Não foi possivel encontrar esse cep"
+            })
+        }
+        
     }
 }
 

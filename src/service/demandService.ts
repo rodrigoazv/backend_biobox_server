@@ -10,18 +10,26 @@ export class DemandService{
         this.demandRepository = getManager().getRepository(Demand);
     }
 
-    instantiate(data: Object): Demand | undefined {
+    instantiate(data: Object): Demand {
         return this.demandRepository.create(data);
     }
     async getAll(){
-        return this.demandRepository.find();
+        return this.demandRepository.createQueryBuilder("demand")
+            .leftJoinAndSelect("demand.products", "product")
+            .getMany();
     }
     async getById(id: string){
         return this.demandRepository.findOneOrFail(id);
     }
-    async insertOne(data: Demand){
-        const NewAdress = this.demandRepository.create(data);
-        return await this.demandRepository.save(NewAdress);
+    async insertOne(data: Demand): Promise<Demand>{
+        try{
+            console.log('Dados de envio', data);
+            const newDemand = this.demandRepository.create(data);
+            return await this.demandRepository.save(newDemand);  
+        } catch (error){
+            return error
+        }
     }
+    
 
 }

@@ -11,23 +11,27 @@ import { User } from '../entity/userEntity';
 
 class loginController{
     public async loginGen(req: Request, res:Response){
-        const userService = new UserService();
-        const authHandle = new AuthHandler();
-        const user: User = await userService.getByEmail(req.body.email);
-        const isPasswordCorrect: Boolean = await bcrypt.compare(
-            req.body.password,
-            user.password
-        )
-        if(!user || !isPasswordCorrect){
-            res.json({
-                sucess:false
+        try{
+            const userService = new UserService();
+            const authHandle = new AuthHandler();
+            const user: User = await userService.getByEmail(req.body.email);
+            const isPasswordCorrect: Boolean = await bcrypt.compare(
+                req.body.password,
+                user.password
+            )
+            if(!user || !isPasswordCorrect){
+                res.json({
+                    sucess:false
+                })
+            }
+            const token: string = authHandle.generateToken(user);
+            res.header('token-auth', token).json({
+                sucess:true,
+                token,
             })
-        }
-        const token: string = authHandle.generateToken(user);
-        res.header('token-auth', token).json({
-            sucess:true,
-            token
-        })
+            }catch(err){
+                err
+            }
     }
 }
 
