@@ -27,7 +27,7 @@ routes.get('/demand/register',verifyToken.verifyToken ,demandController.register
 routes.get('/demand', demandController.index);
 //routes for user
 routes.post('/login', loginController.loginGen);
-routes.get('/', userController.index);
+routes.get('/',verifyToken.verifyToken, userController.index);
 routes.post('/userfull', verifyToken.verifyToken, userController.storeAdressAndUser);
 routes.post('/user', registerController.storeUser);
 routes.get('/useri/:id', userController.getUserEmail);
