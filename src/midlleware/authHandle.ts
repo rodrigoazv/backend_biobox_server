@@ -45,7 +45,7 @@ export class AuthHandler {
           },
           process.env.SECRET_KEY || 'authorization',
           {
-            expiresIn: '24h'
+            expiresIn: 60 * 60 * 60 * 60
           }
         );
     
