@@ -20,18 +20,25 @@ class loginController{
                 user.password
             )
             if(!user || !isPasswordCorrect){
-                res.json({
+                res.status(403).json({
                     sucess:false
                 })
-            }
-            const token: string = authHandle.generateToken(user);
-            res.header('token-auth', token).json({
-                sucess:true,
-                token,
+            }else{
+                const token: string = authHandle.generateToken(user);
+                res.header('token-auth', token).json({
+                    sucess:true,
+                    user: user.id,
+                    userName: user.completName,
+                    token,
+                })}
+        }
+        catch{
+            res.status(404).json({
+                sucess:false
             })
-            }catch(err){
-                err
-            }
+        }
+        
+       
     }
 }
 

@@ -22,7 +22,13 @@ export class Application{
         this.express.use(require('./routes'));
     }
     setupDbAndServer = async () => {
-        const conn = await createConnection();
+         try{
+            await createConnection();
+                
+        }
+        catch(err){
+            console.log(err)
+        }
     }
 
 }

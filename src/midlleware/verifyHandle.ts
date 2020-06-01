@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from 'express'
 
-import { User } from "../entity/userEntity";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 
-export class AuthHandler {
+export class verifyHandle {
 
     verifyToken (req: Request, res: Response, next: NextFunction){
         const pickToken = <string>req.header('authorization');
+        console.log(req.header('authorization'))
         if(!pickToken) {
           return res.status(403).json({
           auth: false,
@@ -26,31 +26,19 @@ export class AuthHandler {
             }
             if(!err){
               req.userId = result.id; 
-              next();
+              return res.status(200).json({
+                auth: true,
+                message: 'Valid token'
+              })
+             
           }
         });
         
-        
+        next();
       } catch {
         res.status(404).json({
           auth: false,
           message: 'invalid token'
       }
       )}  
-}
-    generateToken(user: User){
-        const token = jwt.sign(
-          {
-            id: user.id
-          },
-          process.env.SECRET_KEY || 'authorization',
-          {
-            expiresIn: 60 * 60
-          }
-        );
-    
-        return token;
-      }
-    
-
-}
+}}

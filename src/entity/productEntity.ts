@@ -1,5 +1,5 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
-
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
+import {orderDetail} from './orderDetailsEntity';
 @Entity()
 export class Product{
 
@@ -50,7 +50,7 @@ export class Product{
     })
     stock: number;
 
-    @Column({nullable: true})
-    quantityBuy: number | 0;
+    @OneToMany(type => orderDetail, orderDetail => orderDetail.produtoId)
+    orderDetails: orderDetail[];
 
 }

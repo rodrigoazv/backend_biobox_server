@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, Unique, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, Unique, OneToOne, JoinColumn, OneToMany, BeforeUpdate } from 'typeorm';
 import {Adress} from './adressEntity';
-import { Demand } from './demandEntity';
 
 @Entity()
 export class User{
@@ -41,6 +40,12 @@ export class User{
       select:false
     })
     password: string;
+
+    @Column({
+      select:false,
+      nullable:true,
+    })
+    passTokenRecovery:string;
   
     @CreateDateColumn()
     createdDate: Date;
@@ -53,12 +58,13 @@ export class User{
   
     @Column({ nullable: true })
     lastFailedLoggedDate: Date;
-  
+    
     async setPassword(newPassword: string) {
       this.password = await bcrypt.hash(newPassword, 10);
     }
   
     @BeforeInsert()
+    @BeforeUpdate()
     async encryptPassword() {
       this.password = await bcrypt.hash(this.password, 10);
     }

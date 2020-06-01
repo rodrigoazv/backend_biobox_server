@@ -48,7 +48,6 @@ class demandController{
                 return data 
             })
 
-            demandNew.products = productsListFromCart;
             demandNew.user = userId;
 
             demandNew = await demandService.insertOne(demandNew);

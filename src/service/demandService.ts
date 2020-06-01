@@ -15,7 +15,8 @@ export class DemandService{
     }
     async getAll(){
         return this.demandRepository.createQueryBuilder("demand")
-            .leftJoinAndSelect("demand.products", "product")
+            .leftJoinAndSelect("demand.user", "user")
+            .leftJoinAndSelect("demand.orders", "orders")
             .getMany();
     }
     async getById(id: string){

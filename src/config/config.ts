@@ -9,5 +9,11 @@ export default {
   logging: {
     dir: process.env.LOGGING_DIR || "logs",
     level: process.env.LOGGING_LEVEL || "debug"
+  },
+  mail:{
+    host:"smtp.mailtrap.io",
+    port:2525,
+    user:"ca10b1837bde95",
+    password:"68b543a508ebf4"
   }
 };

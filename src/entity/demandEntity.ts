@@ -1,5 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne, JoinTable } from 'typeorm';
-import { Product } from './productEntity';
+import { orderDetail } from './orderDetailsEntity';
 import { User } from './userEntity';
 
 @Entity()
@@ -10,9 +10,9 @@ export class Demand{
     @Column({ nullable: true })
     name: string;
 
-    @ManyToMany(type => Product)
+    @ManyToMany(type => orderDetail)
     @JoinTable()
-    products: Product[];
+    orders: orderDetail[];
 
     @ManyToOne(type=> User)
     user: User;

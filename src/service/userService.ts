@@ -56,6 +56,18 @@ export class UserService {
       }, relations:["adress"]
     });
   }
+  async getByIdRecovery(id: string):Promise<User | any>{  
+    try{
+      const user = await this.userRepository.createQueryBuilder("user")
+        .where("user.id = :id", { id: id })
+        .addSelect("user.passTokenRecovery")
+        .getOne();
+      return user;
+    } catch(err){
+      err
+    }
+    
+  }
    
    async insertOne(data: User){  
      console.log("Create a new user", data);
@@ -63,10 +75,22 @@ export class UserService {
      return await this.userRepository.save(newUser);   
  
    }
+   async updateOneComplet(data:User): Promise<User>{
+    try {
+      const updateUser = await this.userRepository.save(data);
+      return updateUser;
+    }catch (error){
+      return error
+    }
+ }
 
-   async updateOne(data:User): Promise<User>{
+   async updateOnePass(data:User): Promise<User | any>{
       try {
-        const updateUser = await this.userRepository.save(data);
+        const updateUser = await this.userRepository.createQueryBuilder("user")
+          .update(User)
+          .set({password: data.password})
+          .where("id = :id", { id: data.id })
+          .execute()
         return updateUser;
       }catch (error){
         return error
