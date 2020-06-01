@@ -33,4 +33,4 @@ export class Application{
 
 }
 
-export default new Application().express.listen(3333);
+export default new Application().express.listen( process.env.PORT || 3333);
