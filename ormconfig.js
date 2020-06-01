@@ -8,14 +8,14 @@ module.exports = {
     host:DATABASE_HOST,
     port:DATABASE_PORT,
     cli: {
-      migrationsDir: "src/migrations",
-      entitiesDir: "src/entity",
-      subscribersDir: "src/subscriber"
+      migrationsDir: "dist/migrations",
+      entitiesDir: "dist/entity",
+      subscribersDir: "dist/subscriber"
     },
     entities: [
-        "src/entity/**/*.ts"
+        "dist/entity/**/*.js"
     ],
     migrations: [
-        "src/migrations/**/*.ts"
+        "dist/migrations/**/*.js"
     ],
 };
