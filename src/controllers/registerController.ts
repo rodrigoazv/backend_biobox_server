@@ -3,13 +3,13 @@ import { getManager } from 'typeorm';
 //import service
 import { UserService } from '../service/userService';
 //import user entity
-import { User } from '../entity/userEntity';
+import { UserBio } from '../entity/userEntity';
 
 
 class registerController {
     public async storeUser(req: Request, res: Response){
         try{
-            let userNew = new User();
+            let userNew = new UserBio();
             userNew.completName = req.body.completName;
             userNew.email = req.body.email;
             userNew.password = req.body.password;
@@ -17,7 +17,7 @@ class registerController {
             userNew.number = req.body.number;
             userNew.dateNasc = req.body.dateNasc;
             userNew.Sexo = req.body.sexo;
-            const userRepository = getManager().getRepository(User);
+            const userRepository = getManager().getRepository(UserBio);
             const userService = new UserService();
             userNew = userRepository.create(userNew);
             userNew = await userService.insertOne(userNew);

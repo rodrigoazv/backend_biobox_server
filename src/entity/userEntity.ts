@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, Unique, OneToOne, JoinColumn, OneToMany, BeforeUpdate } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert,  OneToOne, JoinColumn, BeforeUpdate } from 'typeorm';
 import {Adress} from './adressEntity';
 
 @Entity()
-export class User{
+export class UserBio{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

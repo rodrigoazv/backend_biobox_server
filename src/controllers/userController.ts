@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 //import service
 import { UserService } from '../service/userService';
 //import user entity
-import { User } from '../entity/userEntity';
+import { UserBio } from '../entity/userEntity';
 import { Adress } from '../entity/adressEntity';
 import { AdressService } from '../service/adressService';
 import { MailSend } from '../service/sendMailerService';
@@ -17,7 +17,7 @@ class userController {
     public async index(req: Request, res: Response){
         try{
             const userService = new UserService();
-            const user: User[] = await userService.getAll();
+            const user: UserBio[] = await userService.getAll();
             return res.json(user);
         }catch(err){
             res.json(err);
@@ -29,7 +29,7 @@ class userController {
         try{
             const userService = new UserService();
             const adressService = new AdressService();
-            const user: User = await userService.getById(req.userId);
+            const user: UserBio = await userService.getById(req.userId);
 
             const adress = new Adress();
             adress.zipcode = req.body.zipcode;
@@ -57,7 +57,7 @@ class userController {
         try{
             const userService = new UserService();
             console.log(req.params.id);
-            const user: User = await userService.getByIdClean(req.params.id);
+            const user: UserBio = await userService.getByIdClean(req.params.id);
             res.json({
                 user: user
             }) 
@@ -75,7 +75,7 @@ class userController {
             const userService = new UserService();
             const mailSend = new MailSend();
            
-            const user: User = await userService.getByEmail(email)
+            const user: UserBio = await userService.getByEmail(email)
             if(!user){
                 return res.status(404).json({
                     message: 'usuário não encontrado'
@@ -135,7 +135,7 @@ class userController {
         try{
             
             const userService = new UserService();
-            const user: User = await userService.getByEmail(email)
+            const user: UserBio = await userService.getByEmail(email)
             console.log(user)
             if(!user){
                 return res.status(404).json({

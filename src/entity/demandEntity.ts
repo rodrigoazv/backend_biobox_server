@@ -1,6 +1,6 @@
 import {Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne, JoinTable } from 'typeorm';
 import { orderDetail } from './orderDetailsEntity';
-import { User } from './userEntity';
+import { UserBio } from './userEntity';
 
 @Entity()
 export class Demand{
@@ -14,6 +14,6 @@ export class Demand{
     @JoinTable()
     orders: orderDetail[];
 
-    @ManyToOne(type=> User)
-    user: User;
+    @ManyToOne(type=> UserBio)
+    user: UserBio;
 }

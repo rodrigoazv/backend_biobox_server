@@ -1,18 +1,18 @@
 import { getManager, Repository, getConnection } from "typeorm";
 
-import { User } from "../entity/userEntity";
+import { UserBio } from "../entity/userEntity";
 
 export class UserService {
-   userRepository: Repository<User>;
+   userRepository: Repository<UserBio>;
 
    constructor(){
-       this.userRepository = getManager().getRepository(User);
+       this.userRepository = getManager().getRepository(UserBio);
    }
 
      /**
   * Returns array of all users from db
   */
-   instantiate(data: Object): User | undefined {
+   instantiate(data: Object): UserBio | undefined {
      return this.userRepository.create(data);
    }
    async getAll() {
@@ -20,13 +20,13 @@ export class UserService {
    }
 
 
-   async getByEmail(email: string ):Promise<User | any>{     
+   async getByEmail(email: string ):Promise<UserBio | any>{     
     
     try{ 
-      const user = this.userRepository.createQueryBuilder("user")
-        .where("user.email = :email", { email: email })
-        .addSelect("user.password")
-        .addSelect("user.passTokenRecovery")
+      const user = this.userRepository.createQueryBuilder("user_bio")
+        .where("user_bio.email = :email", { email: email })
+        .addSelect("user_bio.password")
+        .addSelect("user_bio.passTokenRecovery")
         .getOne();
       return user;
 
@@ -34,7 +34,7 @@ export class UserService {
       err
     }
    }
-   async getByEmailWithoutPass(email: string ):Promise<User>{     
+   async getByEmailWithoutPass(email: string ):Promise<UserBio>{     
     
     return await this.userRepository.findOneOrFail({
       where: {
@@ -42,11 +42,11 @@ export class UserService {
       }, relations:["adress"]
     });
    }
-   async getById(id: string): Promise<User | any>{     
+   async getById(id: string): Promise<UserBio| any>{     
     try{
-      const user = await this.userRepository.createQueryBuilder("user")
-        .where("user.id = :id", { id: id })
-        .addSelect("user.password")
+      const user = await this.userRepository.createQueryBuilder("user_bio")
+        .where("user_bio.id = :id", { id: id })
+        .addSelect("user_bio.password")
         .getOne();
       return user;
     } catch (err){
@@ -60,11 +60,11 @@ export class UserService {
       }, relations:["adress"]
     });
   }
-  async getByIdRecovery(id: string):Promise<User | any>{  
+  async getByIdRecovery(id: string):Promise<UserBio | any>{  
     try{
-      const user = await this.userRepository.createQueryBuilder("user")
-        .where("user.id = :id", { id: id })
-        .addSelect("user.passTokenRecovery")
+      const user = await this.userRepository.createQueryBuilder("user_bio")
+        .where("user_bio.id = :id", { id: id })
+        .addSelect("user_bio.passTokenRecovery")
         .getOne();
       return user;
     } catch(err){
@@ -73,13 +73,13 @@ export class UserService {
     
   }
    
-   async insertOne(data: User){  
+   async insertOne(data: UserBio){  
      console.log("Create a new user", data);
      const newUser = this.userRepository.create(data);
      return await this.userRepository.save(newUser);   
  
    }
-   async updateOneComplet(data:User): Promise<User>{
+   async updateOneComplet(data:UserBio): Promise<UserBio>{
     try {
       const updateUser = await this.userRepository.save(data);
       return updateUser;
@@ -89,10 +89,10 @@ export class UserService {
     }
  }
 
-   async updateOnePass(data:User): Promise<User | any>{
+   async updateOnePass(data:UserBio): Promise<UserBio | any>{
       try {
-        const updateUser = await this.userRepository.createQueryBuilder("user")
-          .update(User)
+        const updateUser = await this.userRepository.createQueryBuilder("user_bio")
+          .update(UserBio)
           .set({password: data.password})
           .where("id = :id", { id: data.id })
           .execute()
@@ -103,8 +103,8 @@ export class UserService {
    }
    
    
-   async setLastPresentLoggedDate(user: User){
-    const userId: User = this.userRepository.getId(user);
+   async setLastPresentLoggedDate(user: UserBio){
+    const userId: UserBio = this.userRepository.getId(user);
 
     try {
       return await this.userRepository.update(userId, {

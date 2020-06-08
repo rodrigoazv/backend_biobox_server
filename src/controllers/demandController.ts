@@ -1,13 +1,11 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response} from 'express';
 //import service
 //import adress entity
-import { User } from '../entity/userEntity';
+import { UserBio } from '../entity/userEntity';
 import { UserService} from '../service/userService';
 import { DemandService } from '../service/demandService';
 import { Demand } from '../entity/demandEntity';
 import { Product } from '../entity/productEntity';
-import { ProductService } from '../service/productService';
-
 
 
 class demandController{
@@ -40,7 +38,7 @@ class demandController{
             const userService = new UserService();
             const demandService = new DemandService();
 
-            const userId: User = await userService.getById(req.body.userId);
+            const userId: UserBio = await userService.getById(req.body.userId);
             
             console.log(req.body.products)
 

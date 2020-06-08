@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from 'express'
 
-import { User } from "../entity/userEntity";
+import { UserBio } from "../entity/userEntity";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -38,7 +38,7 @@ export class AuthHandler {
       }
       )}  
 }
-    generateToken(user: User){
+    generateToken(user: UserBio){
         const token = jwt.sign(
           {
             id: user.id

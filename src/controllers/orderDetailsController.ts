@@ -1,7 +1,6 @@
 import { Request, Response, Router } from 'express';
 //import service
 //import adress entity
-import { User } from '../entity/userEntity';
 import { UserService} from '../service/userService';
 import { OrderDetailService } from '../service/orderDetailService';
 import { orderDetail } from '../entity/orderDetailsEntity';

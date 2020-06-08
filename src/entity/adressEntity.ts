@@ -1,5 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne } from 'typeorm';
-import { User } from './userEntity';
+import { UserBio } from './userEntity';
 
 @Entity()
 export class Adress{
@@ -30,7 +30,7 @@ export class Adress{
     @CreateDateColumn()
     createdDate: Date;
 
-    @OneToOne(type => User, user => user.adress)
-    user: User;
+    @OneToOne(type => UserBio, user => user.adress)
+    user: UserBio;
 
 }
