@@ -13,6 +13,7 @@ export class MailSend{
     
     async run(
       messageData:{
+        to: string,
         subject: string,
         text: string,
         html: string,
@@ -21,7 +22,7 @@ export class MailSend{
       await this.client.sendEmail({
         Source:'Rodrigo Azevedo <rodrigo@biocampeiro.com.br>',
         Destination:{
-          ToAddresses:['Rodrigo Azevedo <rodrigo@biocampeiro.com.br>'],
+          ToAddresses:[messageData.to],
         },
         Message:{
           Subject:{

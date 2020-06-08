@@ -16,7 +16,7 @@ class registerController {
             userNew.cpf = req.body.cpf;
             userNew.number = req.body.number;
             userNew.dateNasc = req.body.dateNasc;
-
+            userNew.Sexo = req.body.sexo;
             const userRepository = getManager().getRepository(User);
             const userService = new UserService();
             userNew = userRepository.create(userNew);

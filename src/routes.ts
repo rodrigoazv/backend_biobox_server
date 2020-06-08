@@ -35,6 +35,7 @@ routes.post('/forgot_pass', userController.forgotPassword);
 routes.post('/change_pass', userController.recoveryPassword);
 //order ADD VERIFY TOKEN
 routes.post('/sendo',verifyToken.verifyToken, orderDetailsController.sendOrder);
+routes.post('/sendnoadress',verifyToken.verifyToken, orderDetailsController.sendOrderNoAdress )
 //routes for product
 routes.get('/product', productController.index);
 routes.get('/product/:id', productController.indexId);

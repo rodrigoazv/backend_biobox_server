@@ -1,5 +1,4 @@
-import { Request, Response, Router } from 'express';
-import { getManager } from 'typeorm';
+import { Request, Response } from 'express';
 //import service
 import { UserService } from '../service/userService';
 //import user entity
@@ -31,7 +30,7 @@ class userController {
             const userService = new UserService();
             const adressService = new AdressService();
             const user: User = await userService.getById(req.userId);
-            
+
             const adress = new Adress();
             adress.zipcode = req.body.zipcode;
             adress.city = req.body.city;
@@ -41,8 +40,10 @@ class userController {
             adress.complement = req.body.complement;
             adress.neighborhood = req.body.neighborhood;
             const adressFull = await adressService.insertOne(adress);
+            
             user.adress = adressFull;
             const userAndAdressFull = await userService.updateOneComplet(user);
+            console.log(userAndAdressFull);
             res.json({
                 userAndAdressFull
             })
@@ -58,7 +59,7 @@ class userController {
             console.log(req.params.id);
             const user: User = await userService.getByIdClean(req.params.id);
             res.json({
-                user
+                user: user
             }) 
         }catch(err){
             err
@@ -67,6 +68,7 @@ class userController {
 
     public async forgotPassword(req: Request, res: Response){        
         const email = req.body.email;
+        console.log(email);
         
         
         try{
@@ -95,8 +97,9 @@ class userController {
             await userService.updateOneComplet(user);
 
             const messageData = {
-                subject: 'string',
-                text: 'string',
+                to: `${user.email}`,
+                subject: 'Recuperação de senha',
+                text: `Para recuperar seu login utilize o link : http://localhost:3000/recovery/${token}`,
                 html: `<div style="align-items: center; min-width: 100%;">
                 <div style="background-image: url(https://i.imgur.com/zeitEue.jpg); color:38200F;background-repeat:no-repeat;background-position:center;background-size: 100%; height: 600px; width: 600px; margin: 0 auto; ">
                     <div style="align-items: center; width:400px; margin:0 auto; padding-top:100px;">
@@ -112,7 +115,7 @@ class userController {
             </div>
             </div>`,
             }
-            //await mailSend.run(messageData)
+            await mailSend.run(messageData)
             res.status(200).json({
                 sucess: true, 
             })
@@ -126,21 +129,19 @@ class userController {
     }
 
     public async recoveryPassword(req: Request, res: Response){  
-        const {id, token, password} = req.body;
+        const {email, token, password} = req.body;
+        console.log(req.body);
 
         try{
             
             const userService = new UserService();
-            const user: User = await userService.getByIdRecovery(id)
+            const user: User = await userService.getByEmail(email)
+            console.log(user)
             if(!user){
                 return res.status(404).json({
                     message: 'usuário não encontrado'
                 })
             }
-            console.log({
-                token: token,
-                user: user.passTokenRecovery,
-            })
             if(token !== user.passTokenRecovery){
                 return res.status(400).json({
                     message:'Token inválido'

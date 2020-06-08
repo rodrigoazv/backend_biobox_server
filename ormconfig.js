@@ -1,3 +1,4 @@
+
 const { DATABASE_HOST, DATABASE_PORT, DATABASE_USER, DATABASE_PASSWORD, DATABASE } = process.env;
 
 module.exports = {
@@ -8,14 +9,18 @@ module.exports = {
     host:DATABASE_HOST,
     port:DATABASE_PORT,
     cli: {
-      migrationsDir: "dist/migrations",
-      entitiesDir: "dist/entity",
-      subscribersDir: "dist/subscriber"
+      migrationsDir: process.env.NODE_ENV === "test" ? "src/migrations" : "dist/migrations",
+      entitiesDir: process.env.NODE_ENV === "test" ? "src/entity" : "dist/entity",
+      subscribersDir: process.env.NODE_ENV === "test" ? "src/subscriber" : "dist/subscriber",
     },
-    entities: [
+    entities: process.env.NODE_ENV === "test" ? [
+        "src/entity/**/*.ts"
+    ] : [
         "dist/entity/**/*.js"
-    ],
-    migrations: [
+    ] ,
+    migrations:process.env.NODE_ENV === "test" ? [
+        "src/migrations/**/*.ts"
+    ] : [
         "dist/migrations/**/*.js"
     ],
 };

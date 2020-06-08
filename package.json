@@ -2,13 +2,16 @@
   "name": "backend_biobox",
   "version": "1.0.0",
   "description": "API de conexão MVP biobox",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "author": "rodrigoazv",
   "license": "MIT",
   "scripts": {
     "dev:server": "ts-node-dev --respawn --transpileOnly src/index.ts",
     "migration:generate": "ts-node -r dotenv/config ./node_modules/typeorm/cli.js migration:generate --name",
     "migration:run": "ts-node -r dotenv/config ./node_modules/typeorm/cli.js migration:run",
+    "test:migration:generate": "NODE_ENV=test ts-node -r dotenv/config ./node_modules/typeorm/cli.js migration:generate --name",
+    "test:migration:run": "NODE_ENV=test ts-node -r dotenv/config ./node_modules/typeorm/cli.js migration:run",
+    "test":"NODE_ENV=test ts-node-dev --respawn --transpileOnly src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js"
   },

@@ -2,6 +2,10 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { createConnection } from 'typeorm';
+import * as dotenv from "dotenv";
+dotenv.config({  
+  path: process.env.NODE_ENV === "test" ? ".env.test" : ".env"
+});
 
 
 export class Application{
@@ -22,7 +26,7 @@ export class Application{
         this.express.use(require('./routes'));
     }
     setupDbAndServer = async () => {
-         try{
+        try{
             await createConnection();
                 
         }

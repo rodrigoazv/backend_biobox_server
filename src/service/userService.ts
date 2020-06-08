@@ -26,6 +26,7 @@ export class UserService {
       const user = this.userRepository.createQueryBuilder("user")
         .where("user.email = :email", { email: email })
         .addSelect("user.password")
+        .addSelect("user.passTokenRecovery")
         .getOne();
       return user;
 
@@ -41,14 +42,17 @@ export class UserService {
       }, relations:["adress"]
     });
    }
-   async getById(id: string){     
-    return await this.userRepository.findOneOrFail({
-      where: {
-        id, 
-      }
-    });
-   
-  }
+   async getById(id: string): Promise<User | any>{     
+    try{
+      const user = await this.userRepository.createQueryBuilder("user")
+        .where("user.id = :id", { id: id })
+        .addSelect("user.password")
+        .getOne();
+      return user;
+    } catch (err){
+      return err
+    }
+}
   async getByIdClean(id: string){     
     return await this.userRepository.findOneOrFail({
       where: {
@@ -80,6 +84,7 @@ export class UserService {
       const updateUser = await this.userRepository.save(data);
       return updateUser;
     }catch (error){
+      console.log('erro aqui')
       return error
     }
  }

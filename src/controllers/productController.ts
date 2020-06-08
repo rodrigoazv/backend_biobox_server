@@ -49,12 +49,13 @@ class productController {
             const productRepository  = getManager().getRepository(Product);
             productNew = productRepository.create(productNew);
             productNew = await productService.insertOneProduct(productNew);
-            res.json({
+            res.status(200).json({
                 message: "Produto cadastrado",
             })
-        }catch{
-            res.json({
-                message: "Erro ao tentar criar produto"
+        }catch(err){
+            res.status(400).json({
+                message: "Erro ao tentar criar produto",
+                err: err
             })
         }
     }

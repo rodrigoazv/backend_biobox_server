@@ -21,6 +21,7 @@ export class ProductService{
         return await this.productRepository.findOneOrFail(id);
     }
     async insertOneProduct(data: Product){
+        console.log(data);
         const NewProduct = this.productRepository.create(data);
         return await this.productRepository.save(NewProduct);
     }

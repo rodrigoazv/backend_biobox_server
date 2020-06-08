@@ -13,6 +13,11 @@ export class User{
     completName: string;
 
     @Column({
+      nullable:false
+    })
+    Sexo: string;
+
+    @Column({
       unique: true,
     })
     email: string;
