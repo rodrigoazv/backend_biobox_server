@@ -108,7 +108,7 @@ class userController {
                             Uma solicitação de recuperação de senha foi realizada para sua conta (${email}) no nosso site. Se você não foi o autor, apenas descarte esse e-mail.</p>
                         <p>Caso tenha perdido sua senha não tem problema</br>
                         pode acessar por este link abaixo:  </p>
-                        <button style="border:none; border-radius: 5px; padding: 10px;  background-color: #91B431;"><a href="http://localhost:3000/recovery/${token}" style="color:FFFAF5; text-decoration: none; font-weight: 600;">Link para recuperação</a></button>
+                        <button style="border:none; border-radius: 5px; padding: 10px;  background-color: #91B431;"><a href="https://biocampeiro-frontend.herokuapp.com/recovery/${token}" style="color:FFFAF5; text-decoration: none; font-weight: 600;">Link para recuperação</a></button>
                         <p>Abraaaço!</br>
                         Equipe Biocampeiro </p>
                     </div>
