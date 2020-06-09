@@ -22,7 +22,8 @@ export class Product{
     productTecDescription: string;
 
     @Column({
-        nullable: false
+        nullable: false,
+        type: "float"
     })
     productPrice: number;
     

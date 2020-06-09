@@ -1,13 +1,11 @@
 
-const { DATABASE_HOST, DATABASE_PORT, DATABASE_USER, DATABASE_PASSWORD, DATABASE } = process.env;
-
 module.exports = {
     type:"postgres",
-    username:DATABASE_USER,
-    password:DATABASE_PASSWORD,
-    database:DATABASE,
-    host:DATABASE_HOST,
-    port:DATABASE_PORT,
+    username:process.env.NODE_ENV === "test" ? process.env.TEST_DATABASE_USER : process.env.DATABASE_USER,
+    password:process.env.NODE_ENV === "test" ? process.env.TEST_DATABASE_PASSWORD : process.env.DATABASE_PASSWORD,
+    database:process.env.NODE_ENV === "test" ? process.env.TEST_DATABASE : process.env.DATABASE,
+    host:process.env.NODE_ENV === "test" ? process.env.TEST_DATABASE_HOST : process.env.DATABASE_HOST,
+    port:process.env.NODE_ENV === "test" ? process.env.TEST_DATABASE_PORT : process.env.DATABASE_PORT,
     cli: {
       migrationsDir: process.env.NODE_ENV === "test" ? "src/migrations" : "dist/migrations",
       entitiesDir: process.env.NODE_ENV === "test" ? "src/entity" : "dist/entity",

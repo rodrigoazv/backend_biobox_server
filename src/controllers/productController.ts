@@ -32,12 +32,12 @@ class productController {
     public async store(req: Request , res: Response){
 
         const documentFile  = (req as File).file;
-        
+    
         try{
             let productNew = new Product();
             productNew.productName = req.body.productName;
             productNew.productDescription = req.body.productDescription;
-            productNew.productTecDescription = req.body.productDescription;
+            productNew.productTecDescription = req.body.productTecDescription;
             productNew.productVol = req.body.productVol;
             productNew.productPrice = req.body.productPrice;
             productNew.photoUrl =  documentFile.location;

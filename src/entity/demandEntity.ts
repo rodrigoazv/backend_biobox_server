@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne, JoinTable } from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, ManyToMany, ManyToOne, JoinTable,CreateDateColumn } from 'typeorm';
 import { orderDetail } from './orderDetailsEntity';
 import { UserBio } from './userEntity';
 
@@ -7,8 +7,8 @@ export class Demand{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ nullable: true })
-    name: string;
+    @CreateDateColumn()
+    createdDate: Date;
 
     @ManyToMany(type => orderDetail)
     @JoinTable()
