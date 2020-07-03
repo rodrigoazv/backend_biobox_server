@@ -4,6 +4,7 @@ import { getManager } from 'typeorm';
 import { ProductService } from '../service/productService';
 //import user entity
 import { Product } from '../entity/productEntity';
+import aws from "aws-sdk";
 
 interface File extends Request{
     file:any,    
@@ -11,21 +12,50 @@ interface File extends Request{
 class productController {
     public async index(req: Request, res: Response): Promise<Response | undefined>{
         try{
-            const userService = new ProductService();
-            const user: Product[] = await userService.getAll();
-            return res.json(user);
+            const productService = new ProductService();
+            const product: Product[] = await productService.getAll();
+            return res.json(product);
         }catch{
-            res.json({message:"Ops, sem permissão para retornar todos os usuarios"})
+            res.json({message:"Ops, sem permissão para retornar todos os produtos"})
         }
     }
     public async indexId(req: Request, res: Response): Promise<Response | undefined>{
         try{
-            console.log(req.params.id);
-            const userService = new ProductService();
-            const user: Product = await userService.getById(req.params.id);
-            return res.json(user);
+            const productService = new ProductService();
+            const product: Product = await productService.getById(req.params.id);
+            return res.json(product);
         }catch{
             res.json({message:"Ops, sem permissão para retornar produto"})
+        }
+    }
+    public async indexIdBody(req: Request, res: Response): Promise<Response | undefined>{
+        try{
+            const productService = new ProductService();
+            const product: Product = await productService.getById(req.body.id);
+            return res.json(product);
+        }catch{
+            res.json({message:"Ops, sem permissão para retornar produto"})
+        }
+    }
+    public async delete(req: Request, res: Response){
+        try{
+            const productService = new ProductService();
+            const product: Product = await productService.getById(req.params.id);
+            const s3 = new aws.S3();
+            s3.deleteObject({
+                Bucket: 'biocateste',
+                Key: product.photoName
+            }).promise()
+            await productService.deletProduct(req.params.id);
+            res.status(200).json({
+                sucess:true,
+                message: 'EveryThing OK'
+            })
+        }catch(err){
+            res.status(400).json({
+                sucess: false,
+                message: "Não foi possivel excluir o produto"
+            })
         }
     }
 

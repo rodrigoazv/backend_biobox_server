@@ -13,9 +13,9 @@ class demandController{
         try{
             const demandService = new DemandService();
             const demand: Demand[] = await demandService.getAll();
-            return res.json(demand);
+            return res.status(200).json(demand);
         }catch(err){
-            res.json(err);
+            res.status(404).json(err);
         } 
     }
     public async registerUserAdress(req: Request, res: Response){
@@ -30,36 +30,6 @@ class demandController{
         res.json({erro})
     }
         
-    }
-    public async sendOrder(req: Request, res: Response){
-       
-       try{ 
-            let demandNew = new Demand();
-            const userService = new UserService();
-            const demandService = new DemandService();
-
-            const userId: UserBio = await userService.getById(req.body.userId);
-            
-            console.log(req.body.products)
-
-            const productsListFromCart: Product[] = req.body.products.map((data: Product )=> {
-                return data 
-            })
-
-            demandNew.user = userId;
-
-            demandNew = await demandService.insertOne(demandNew);
-
-            res.status(200).json({
-                demandNew
-            })
-       } 
-       catch{
-            res.status(404).json({
-                message:'deuruim'
-            })
-       }
-
     }
     
 }

@@ -22,14 +22,10 @@ export class DemandService{
     async getById(id: string){
         return this.demandRepository.findOneOrFail(id);
     }
-    async insertOne(data: Demand): Promise<Demand>{
-        try{
-            console.log('Dados de envio', data);
-            const newDemand = this.demandRepository.create(data);
-            return await this.demandRepository.save(newDemand);  
-        } catch (error){
-            return error
-        }
+    async insertOne(data: Demand): Promise<Demand>{  
+        const newDemand = this.demandRepository.create(data);
+        const saveDemand = await this.demandRepository.save(newDemand);
+        return saveDemand;   
     }
     
 

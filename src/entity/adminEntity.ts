@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt';
 import {Entity, Column, PrimaryGeneratedColumn,  BeforeInsert,  BeforeUpdate } from 'typeorm';
-
-
 @Entity()
 export class AdminBio{
     @PrimaryGeneratedColumn('uuid')

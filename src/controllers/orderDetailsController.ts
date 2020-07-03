@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response} from 'express';
 //import service
 //import adress entity
 import { UserService} from '../service/userService';
@@ -14,7 +14,7 @@ import { AdressService } from '../service/adressService';
 
 class orderDetailController{
     public async sendOrderNoAdress(req: Request, res: Response){
-       
+        const {zipcode, city, state, street, number, complement, neighborhood} = req.body.adressUser;
         try{
             let orderDetailNew = new orderDetail();
             let demandNew = new Demand();
@@ -30,12 +30,23 @@ class orderDetailController{
                 orderDetailNew.produtoId = await productService.getById(data.pid)
                 orderDetailNew.price = data.price;
                 orderDetailNew.quantity = data.quantity;
+                orderDetailNew.productName = data.name;
+                orderDetailNew.productDescription = data.description;
+                console.log(data);
                 orderDetailNew = await orderDetailService.insertOne(orderDetailNew);
                 return orderDetailNew;
                 
             }))
             demandNew.orders = dados;
             demandNew.user = userId;
+            demandNew.shipCity = city;
+            demandNew.shipComplement = complement;
+            demandNew.shipNeighborhood = neighborhood;
+            demandNew.shipState = state;
+            demandNew.shipStreet = street;
+            demandNew.shipZipcode = zipcode;
+            demandNew.shipNumber = number;
+            demandNew.totalPrice = req.body.totalPrice;
 
             await demandService.insertOne(demandNew);
             //demand.orders = [];
@@ -53,7 +64,8 @@ class orderDetailController{
 
     }
     public async sendOrder(req: Request, res: Response){
-       
+        const {zipcode, city, state, street, number, complement, neighborhood} = req.body.adress;
+        
         try{
             let orderDetailNew = new orderDetail();
             let demandNew = new Demand();
@@ -66,21 +78,19 @@ class orderDetailController{
             const adressService = new AdressService();
             
             const userId = await userService.getById(req.userId);
-            console.log('reqbody----------',req.body)
-            
-            adress.zipcode = req.body.adress.zipcode;
-            adress.city = req.body.adress.city;
-            adress.state = req.body.adress.state;
-            adress.street = req.body.adress.street;
-            adress.number = req.body.adress.number;
-            adress.complement = req.body.adress.complement;
-            adress.neighborhood = req.body.adress.neighborhood;
+            //Inserindo endereço na tabela adress e criando relação com usuário
+            adress.zipcode = zipcode;
+            adress.city = city;
+            adress.state = state;
+            adress.street = street;
+            adress.number = number;
+            adress.complement = complement;
+            adress.neighborhood = neighborhood;
             adress.user = userId;
             const adressFull = await adressService.insertOne(adress);
             userId.adress = adressFull
             const userFull = await userService.updateOneComplet(userId);
-            console.log(userFull)
-            
+            //Inserindo 
             const dados: orderDetail[] = await Promise.all(req.body.products.map(async (data: any)=> {
                 orderDetailNew.produtoId = await productService.getById(data.pid)
                 orderDetailNew.price = data.price;
@@ -91,6 +101,15 @@ class orderDetailController{
             }))
             demandNew.orders = dados;
             demandNew.user = userFull;
+            demandNew.shipCity = city;
+            demandNew.shipComplement = complement;
+            demandNew.shipNeighborhood = neighborhood;
+            demandNew.shipState = state;
+            demandNew.shipStreet = street;
+            demandNew.shipZipcode = zipcode;
+            demandNew.shipNumber = number;
+            demandNew.totalPrice = req.body.totalPrice;
+            
 
             await demandService.insertOne(demandNew);
             //demand.orders = [];

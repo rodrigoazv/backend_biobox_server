@@ -12,7 +12,16 @@ export class orderDetail{
     @Column({ nullable: false})
     quantity: number;
 
-    @Column({ nullable: false})
+    @Column({nullable: false})
+    productName: string;
+
+    @Column({nullable: false})
+    productDescription: string;
+
+    @Column({ 
+        nullable: false, 
+        type: "float"
+    })
     price: number;
 
     @CreateDateColumn()

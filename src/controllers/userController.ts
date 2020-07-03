@@ -112,7 +112,7 @@ class userController {
             </div>
             </div>`,
             }
-            //await mailSend.run(messageData)
+            await mailSend.run(messageData)
             res.status(200).json({
                 sucess: true, 
             })

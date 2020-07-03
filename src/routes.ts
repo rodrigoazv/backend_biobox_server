@@ -18,6 +18,7 @@ import loginController from './controllers/loginController';
 import demandController from './controllers/demandController';
 import validateController from './controllers/validateController';
 import orderDetailsController from './controllers/orderDetailsController';
+import mailListController from './controllers/mailListController';
 //ADM
 import adminLoginControler from './controllers/loginAdmin';
 import adminController from './controllers/registerAdmin';
@@ -27,6 +28,9 @@ const routes: Router = Router();
 const verifyToken = new AuthHandler();
 const authToken = new verifyHandle();
 const authAdmin = new AuthAdmin();
+//routes for marketing
+routes.post('/mail/lead', mailListController.mailStore)
+routes.get('/mail', mailListController.index);
 //routes for demandSend
 routes.get('/demand/register',verifyToken.verifyToken ,demandController.registerUserAdress);
 //routes for user
@@ -42,6 +46,7 @@ routes.post('/sendnoadress',verifyToken.verifyToken, orderDetailsController.send
 //routes for product
 routes.get('/product', productController.index);
 routes.get('/product/:id', productController.indexId);
+routes.get('/product/index', productController.indexIdBody);
 //routes for sell/
 routes.post('/adressregister', adressController.storeAdress);
 routes.get('/getcep/:zipcode', adressController.getCep);
@@ -49,6 +54,7 @@ routes.get('/getcep/:zipcode', adressController.getCep);
 routes.get('/auth/1/user',authToken.verifyToken);
 //ROTAS PRIVADAS ADMINISTRAÇÃO
 routes.post('/product/register',multer(multerConfig).single('file'),authAdmin.verifyToken, productController.store);
+routes.delete('/product/:id', authAdmin.verifyToken, productController.delete)
 routes.get('/demand', demandController.index);
 routes.get('/', userController.index);
 routes.get('/auth/admin',authAdmin.verifyToken);
