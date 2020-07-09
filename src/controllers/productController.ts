@@ -74,6 +74,7 @@ class productController {
             productNew.photoName = documentFile.key;
             productNew.category = req.body.category;
             productNew.stock = req.body.stock;
+            
 
             const productService = new ProductService();
             const productRepository  = getManager().getRepository(Product);

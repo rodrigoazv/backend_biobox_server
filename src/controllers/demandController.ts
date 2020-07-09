@@ -1,11 +1,9 @@
 import { Request, Response} from 'express';
 //import service
 //import adress entity
-import { UserBio } from '../entity/userEntity';
 import { UserService} from '../service/userService';
 import { DemandService } from '../service/demandService';
 import { Demand } from '../entity/demandEntity';
-import { Product } from '../entity/productEntity';
 
 
 class demandController{
