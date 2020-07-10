@@ -39,6 +39,7 @@ export class Product{
         nullable: false
     })
     photoUrl: string;
+    
     @Column({
         nullable: false
     })
@@ -53,7 +54,7 @@ export class Product{
         nullable: false
     })
     stock: number;
-    
+
     @ManyToOne(type => Category, category => category.product)
     category: Category;
 

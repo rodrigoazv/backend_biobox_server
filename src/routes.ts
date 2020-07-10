@@ -17,6 +17,7 @@ import registerController from './controllers/registerController';
 import loginController from './controllers/loginController';
 import demandController from './controllers/demandController';
 import validateController from './controllers/validateController';
+import categoryController from './controllers/categoryController';
 import orderDetailsController from './controllers/orderDetailsController';
 import mailListController from './controllers/mailListController';
 //ADM
@@ -60,6 +61,13 @@ routes.get('/', userController.index);
 routes.get('/auth/admin',authAdmin.verifyToken);
 routes.post('/register/admin', adminController.storeUser);
 routes.post('/login/admin', adminLoginControler.loginGen);
+// Administração categorias registros
+routes.post('/register/category', authAdmin.verifyToken, categoryController.storeCategory);
+routes.post('/register/subcategory', authAdmin.verifyToken, categoryController.storeSubCategory);
+routes.post('/register/productelement', multer(multerConfig).single('file'), authAdmin.verifyToken, categoryController.storeProductTecElement);
+routes.get('/productelements/index', categoryController.indexProductElements)
+routes.get('/category/index', categoryController.indexCategory)
+routes.get('/subcategory/index', categoryController.indexSubCategory)
 
 
 

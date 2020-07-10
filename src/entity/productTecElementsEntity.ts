@@ -13,9 +13,9 @@ export class productTecElements{
     name: string
 
     @Column({
-        nullable: false,
+        nullable: false
     })
-    description: string
+    iconUrl: string;
 
     @ManyToOne(type => Product, product => product.element)
     product: Product;

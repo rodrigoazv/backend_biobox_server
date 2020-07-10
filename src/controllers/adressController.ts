@@ -1,5 +1,5 @@
 
-import { Request, Response, Router } from 'express';
+import { Request, Response} from 'express';
 import { getManager } from 'typeorm';
 //import service
 import { AdressService } from '../service/adressService';

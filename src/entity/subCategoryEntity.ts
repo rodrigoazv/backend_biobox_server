@@ -12,11 +12,6 @@ export class SubCategory{
     })
     name: string
 
-    @Column({
-        nullable: false,
-    })
-    description: string
-
     @OneToMany(type => Product, product => product.subCategory)
     products: Product[];
 

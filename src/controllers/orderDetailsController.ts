@@ -32,7 +32,6 @@ class orderDetailController{
                 orderDetailNew.quantity = data.quantity;
                 orderDetailNew.productName = data.name;
                 orderDetailNew.productDescription = data.description;
-                console.log(data);
                 orderDetailNew = await orderDetailService.insertOne(orderDetailNew);
                 return orderDetailNew;
                 
@@ -65,8 +64,8 @@ class orderDetailController{
     }
     public async sendOrder(req: Request, res: Response){
         const {zipcode, city, state, street, number, complement, neighborhood} = req.body.adress;
+        console.log(req.body)
         
-        try{
             let orderDetailNew = new orderDetail();
             let demandNew = new Demand();
             
@@ -94,6 +93,8 @@ class orderDetailController{
             const dados: orderDetail[] = await Promise.all(req.body.products.map(async (data: any)=> {
                 orderDetailNew.produtoId = await productService.getById(data.pid)
                 orderDetailNew.price = data.price;
+                orderDetailNew.productName = data.name;
+                orderDetailNew.productDescription = data.description;
                 orderDetailNew.quantity = data.quantity;
                 orderDetailNew = await orderDetailService.insertOne(orderDetailNew);
                 return orderDetailNew;
@@ -109,6 +110,10 @@ class orderDetailController{
             demandNew.shipZipcode = zipcode;
             demandNew.shipNumber = number;
             demandNew.totalPrice = req.body.totalPrice;
+            //MUDAR VALORES AQUI
+            demandNew.shipValue = 2
+            demandNew.vaucher ="no"
+            demandNew.shipStatus ="enviado"
             
 
             await demandService.insertOne(demandNew);
@@ -117,11 +122,7 @@ class orderDetailController{
                 message: "Enviado"
             })
 
-        }catch{
-            res.status(400).json({
-                message: "Não foi possivel realizar seu pedido"
-            })
-        }
+        
             
       
 

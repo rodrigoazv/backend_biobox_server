@@ -2,9 +2,17 @@ import { Request, Response } from 'express';
 import { getManager } from 'typeorm';
 //import service
 import { ProductService } from '../service/productService';
+import { CategoryService } from '../service/categoryService';
 //import user entity
+import { Category } from '../entity/categoryEntity';
 import { Product } from '../entity/productEntity';
 import aws from "aws-sdk";
+import { SubCategory } from '../entity/subCategoryEntity';
+import { SubCategoryService } from '../service/subCategoryService';
+import { productTecElements } from '../entity/productTecElementsEntity';
+import { ProductTecElementsService } from '../service/productElementService';
+
+
 
 interface File extends Request{
     file:any,    
@@ -63,7 +71,24 @@ class productController {
 
         const documentFile  = (req as File).file;
     
-        try{
+        
+            //Requisição na tabela do banco para criar relação entre o produto e suas (Categorias e SubCategorias)
+            console.log(req.body)
+            const categoryService = new CategoryService();
+            const subCategoryService = new SubCategoryService();
+            const productTecElementsService = new ProductTecElementsService();
+            let categoryStore: Category = await categoryService.getByName(req.body.category);
+            let subCategoryStore: SubCategory = await subCategoryService.getByName(req.body.subcategory)
+            
+            //Requisição na tabela productElement Caracteristias para fazer o map e setar todas as caracteristicas dos produtos
+            
+            const dadosProduct: productTecElements[] = await Promise.all(req.body.tecElement.map(async (data: string)=> {
+                let productTec = await productTecElementsService.getByName(data)
+                return productTec;
+                
+            }))
+            console.log("ss",dadosProduct);
+            
             let productNew = new Product();
             productNew.productName = req.body.productName;
             productNew.productDescription = req.body.productDescription;
@@ -72,8 +97,11 @@ class productController {
             productNew.productPrice = req.body.productPrice;
             productNew.photoUrl =  documentFile.location;
             productNew.photoName = documentFile.key;
-            productNew.category = req.body.category;
+            productNew.category = categoryStore;
             productNew.stock = req.body.stock;
+            productNew.subCategory = subCategoryStore;
+            productNew.element = dadosProduct;
+            productNew.brand = req.body.brand;
             
 
             const productService = new ProductService();
@@ -83,12 +111,7 @@ class productController {
             res.status(200).json({
                 message: "Produto cadastrado",
             })
-        }catch(err){
-            res.status(400).json({
-                message: "Erro ao tentar criar produto",
-                err: err
-            })
-        }
+        
     }
 }
 
