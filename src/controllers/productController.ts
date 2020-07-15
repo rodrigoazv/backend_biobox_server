@@ -49,19 +49,21 @@ class productController {
         try{
             const productService = new ProductService();
             const product: Product = await productService.getById(req.params.id);
+            
             const s3 = new aws.S3();
             s3.deleteObject({
                 Bucket: 'biocateste',
                 Key: product.photoName
             }).promise()
             await productService.deletProduct(req.params.id);
+
             res.status(200).json({
-                sucess:true,
+                status:true,
                 message: 'EveryThing OK'
             })
         }catch(err){
             res.status(400).json({
-                sucess: false,
+                status: false,
                 message: "Não foi possivel excluir o produto"
             })
         }
@@ -70,10 +72,8 @@ class productController {
     public async store(req: Request , res: Response){
 
         const documentFile  = (req as File).file;
-    
+        try{
         
-            //Requisição na tabela do banco para criar relação entre o produto e suas (Categorias e SubCategorias)
-            console.log(req.body)
             const categoryService = new CategoryService();
             const subCategoryService = new SubCategoryService();
             const productTecElementsService = new ProductTecElementsService();
@@ -87,7 +87,6 @@ class productController {
                 return productTec;
                 
             }))
-            console.log("ss",dadosProduct);
             
             let productNew = new Product();
             productNew.productName = req.body.productName;
@@ -102,15 +101,30 @@ class productController {
             productNew.subCategory = subCategoryStore;
             productNew.element = dadosProduct;
             productNew.brand = req.body.brand;
-            
 
             const productService = new ProductService();
             const productRepository  = getManager().getRepository(Product);
             productNew = productRepository.create(productNew);
             productNew = await productService.insertOneProduct(productNew);
+ 
+
+            categoryStore.product = [productNew];
+            const product = await categoryService.updateProduct(categoryStore);
+            console.log(product)
+
             res.status(200).json({
                 message: "Produto cadastrado",
+                status:true
             })
+        }catch{
+            res.status(400).json({
+                message:"Nao foi possivel cadastrar o produto",
+                status:false
+            })
+        }
+        
+            //Requisição na tabela do banco para criar relação entre o produto e suas (Categorias e SubCategorias)
+            
         
     }
 }
