@@ -14,15 +14,15 @@ export class Demand{
     totalPrice: number;
 
     @Column({
-        nullable: true,
+        nullable: false,
         type: "float"
     })
     shipValue: number;
 
-    @Column({ nullable: true})
+    @Column({ nullable: false})
     vaucher: string;
 
-    @Column({ nullable: true})
+    @Column({ nullable: false})
     shipStatus: string;
 
     @Column()

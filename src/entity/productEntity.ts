@@ -1,5 +1,8 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToOne} from 'typeorm';
 import {orderDetail} from './orderDetailsEntity';
+import { productTecElements } from './productTecElementsEntity';
+import { Category } from './categoryEntity';
+import { SubCategory } from './subCategoryEntity';
 @Entity()
 export class Product{
 
@@ -36,6 +39,7 @@ export class Product{
         nullable: false
     })
     photoUrl: string;
+    
     @Column({
         nullable: false
     })
@@ -44,14 +48,22 @@ export class Product{
     @Column({
         nullable: false
     })
-    category: string;
+    brand: string;
 
     @Column({
         nullable: false
     })
     stock: number;
 
+    @ManyToOne(type => Category, category => category.product)
+    category: Category;
+
+    @ManyToOne(type => SubCategory, subCategory => subCategory.products)
+    subCategory: SubCategory;
+
     @OneToMany(type => orderDetail, orderDetail => orderDetail.produtoId)
     orderDetails: orderDetail[];
 
+    @OneToMany(type => productTecElements, productTecElements => productTecElements.product)
+    element: productTecElements[];
 }

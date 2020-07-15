@@ -18,7 +18,11 @@ export class ProductService{
         return await this.productRepository.findOneOrFail(category);
     }
     async getById(id: string): Promise<Product>{
-        return await this.productRepository.findOneOrFail(id);
+        return await this.productRepository.findOneOrFail({
+            where: {
+              id, 
+            }, relations:["category", "subCategory", "element"]
+          });;
     }
     async insertOneProduct(data: Product){
         console.log(data);

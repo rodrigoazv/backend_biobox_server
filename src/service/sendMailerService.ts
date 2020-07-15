@@ -20,7 +20,7 @@ export class MailSend{
       }
       ): Promise<void>{
       await this.client.sendEmail({
-        Source:'Rodrigo Azevedo <rodrigo@biocampeiro.com.br>',
+        Source:'Recuperação de senha Biocampeiro <biocampeiro@biocampeiro.com>',
         Destination:{
           ToAddresses:[messageData.to],
         },

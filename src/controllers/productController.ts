@@ -2,9 +2,17 @@ import { Request, Response } from 'express';
 import { getManager } from 'typeorm';
 //import service
 import { ProductService } from '../service/productService';
+import { CategoryService } from '../service/categoryService';
 //import user entity
+import { Category } from '../entity/categoryEntity';
 import { Product } from '../entity/productEntity';
 import aws from "aws-sdk";
+import { SubCategory } from '../entity/subCategoryEntity';
+import { SubCategoryService } from '../service/subCategoryService';
+import { productTecElements } from '../entity/productTecElementsEntity';
+import { ProductTecElementsService } from '../service/productElementService';
+
+
 
 interface File extends Request{
     file:any,    
@@ -41,19 +49,21 @@ class productController {
         try{
             const productService = new ProductService();
             const product: Product = await productService.getById(req.params.id);
+            
             const s3 = new aws.S3();
             s3.deleteObject({
                 Bucket: 'biocateste',
                 Key: product.photoName
             }).promise()
             await productService.deletProduct(req.params.id);
+
             res.status(200).json({
-                sucess:true,
+                status:true,
                 message: 'EveryThing OK'
             })
         }catch(err){
             res.status(400).json({
-                sucess: false,
+                status: false,
                 message: "Não foi possivel excluir o produto"
             })
         }
@@ -62,8 +72,22 @@ class productController {
     public async store(req: Request , res: Response){
 
         const documentFile  = (req as File).file;
-    
         try{
+        
+            const categoryService = new CategoryService();
+            const subCategoryService = new SubCategoryService();
+            const productTecElementsService = new ProductTecElementsService();
+            let categoryStore: Category = await categoryService.getByName(req.body.category);
+            let subCategoryStore: SubCategory = await subCategoryService.getByName(req.body.subcategory)
+            
+            //Requisição na tabela productElement Caracteristias para fazer o map e setar todas as caracteristicas dos produtos
+            
+            const dadosProduct: productTecElements[] = await Promise.all(req.body.tecElement.map(async (data: string)=> {
+                let productTec = await productTecElementsService.getByName(data)
+                return productTec;
+                
+            }))
+            
             let productNew = new Product();
             productNew.productName = req.body.productName;
             productNew.productDescription = req.body.productDescription;
@@ -72,22 +96,36 @@ class productController {
             productNew.productPrice = req.body.productPrice;
             productNew.photoUrl =  documentFile.location;
             productNew.photoName = documentFile.key;
-            productNew.category = req.body.category;
+            productNew.category = categoryStore;
             productNew.stock = req.body.stock;
+            productNew.subCategory = subCategoryStore;
+            productNew.element = dadosProduct;
+            productNew.brand = req.body.brand;
 
             const productService = new ProductService();
             const productRepository  = getManager().getRepository(Product);
             productNew = productRepository.create(productNew);
             productNew = await productService.insertOneProduct(productNew);
+ 
+
+            categoryStore.product = [productNew];
+            const product = await categoryService.updateProduct(categoryStore);
+            console.log(product)
+
             res.status(200).json({
                 message: "Produto cadastrado",
+                status:true
             })
-        }catch(err){
+        }catch{
             res.status(400).json({
-                message: "Erro ao tentar criar produto",
-                err: err
+                message:"Nao foi possivel cadastrar o produto",
+                status:false
             })
         }
+        
+            //Requisição na tabela do banco para criar relação entre o produto e suas (Categorias e SubCategorias)
+            
+        
     }
 }
 

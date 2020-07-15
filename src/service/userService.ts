@@ -84,7 +84,6 @@ export class UserService {
       const updateUser = await this.userRepository.save(data);
       return updateUser;
     }catch (error){
-      console.log('erro aqui')
       return error
     }
  }

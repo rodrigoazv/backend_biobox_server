@@ -24,7 +24,7 @@ const storageTypes = {
     s3: multerS3({
     
         s3: new aws.S3(),
-        bucket: 'biocateste',
+        bucket: 'biocabox',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl:'public-read',
         key: (req, file, cb) => {
@@ -47,9 +47,7 @@ export default {
     fileFilter:(req: any , file:any, cb:any)=>{
         const allowedMimes = [
             "image/jpeg",
-            "image/pjpeg",
             "image/png",
-            "image/gif"
         ];
         
         if(allowedMimes.includes(file.mimetype)) {
