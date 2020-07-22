@@ -22,4 +22,5 @@ export class Category{
 
     @OneToMany(type => SubCategory, subCategory => subCategory.category)
     subCategorys: SubCategory[];
+    categoryStore: Product;
 }

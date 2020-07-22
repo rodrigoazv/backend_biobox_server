@@ -55,6 +55,11 @@ export class Product{
     })
     stock: number;
 
+    @Column({
+        nullable: true
+    })
+    sellQuantity: number;
+
     @ManyToOne(type => Category, category => category.product)
     category: Category;
 

@@ -28,7 +28,12 @@ class orderDetailController{
             //Inserindo endereço na tabela adress e criando relação com usuário
             //Inserindo 
             const dados: orderDetail[] = await Promise.all(req.body.products.map(async (data: any)=> {
-                orderDetailNew.produtoId = await productService.getById(data.pid)
+                //Atualiza o produto com a quantidade vendida dele 
+                let productData = await productService.getById(data.pid)
+                productData.sellQuantity += data.quantity;
+                await productService.updateProduct(productData);
+                //insere o produto no orderDetails, fica os detalhes dos produtos na demanda
+                orderDetailNew.produtoId = productData;
                 orderDetailNew.price = data.price;
                 orderDetailNew.productName = data.name;
                 orderDetailNew.productDescription = data.description;
@@ -48,9 +53,9 @@ class orderDetailController{
             demandNew.shipNumber = number;
             demandNew.totalPrice = req.body.totalPrice;
             //MUDAR VALORES AQUI
-            demandNew.shipValue = 2
-            demandNew.vaucher ="no"
-            demandNew.shipStatus ="enviado"
+            demandNew.shipValue = req.body.shipValue;
+            demandNew.vaucher =req.body.vaucher;
+            demandNew.shipStatus =req.body.shipStatus;
             
 
             await demandService.insertOne(demandNew);
