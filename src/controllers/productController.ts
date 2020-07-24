@@ -73,7 +73,6 @@ class productController {
 
         const documentFile  = (req as File).file;
         try{
-        
             const categoryService = new CategoryService();
             const subCategoryService = new SubCategoryService();
             const productTecElementsService = new ProductTecElementsService();
@@ -104,13 +103,11 @@ class productController {
 
             const productService = new ProductService();
             const productRepository  = getManager().getRepository(Product);
-            productNew = productRepository.create(productNew);
             productNew = await productService.insertOneProduct(productNew);
  
 
             categoryStore.product = [productNew];
-            const product = await categoryService.updateProduct(categoryStore);
-            console.log(product)
+            await categoryService.updateProduct(categoryStore);
 
             res.status(200).json({
                 message: "Produto cadastrado",
@@ -118,7 +115,7 @@ class productController {
             })
         }catch{
             res.status(400).json({
-                message:"Nao foi possivel cadastrar o produto",
+                message: "Não foi possivel cadastrar o produto",
                 status:false
             })
         }
