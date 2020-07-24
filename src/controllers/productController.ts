@@ -72,7 +72,6 @@ class productController {
     public async store(req: Request , res: Response){
 
         const documentFile  = (req as File).file;
-        try{
         
             const categoryService = new CategoryService();
             const subCategoryService = new SubCategoryService();
@@ -104,24 +103,17 @@ class productController {
 
             const productService = new ProductService();
             const productRepository  = getManager().getRepository(Product);
-            productNew = productRepository.create(productNew);
             productNew = await productService.insertOneProduct(productNew);
  
 
             categoryStore.product = [productNew];
-            const product = await categoryService.updateProduct(categoryStore);
-            console.log(product)
+            await categoryService.updateProduct(categoryStore);
 
             res.status(200).json({
                 message: "Produto cadastrado",
                 status:true
             })
-        }catch{
-            res.status(400).json({
-                message:"Nao foi possivel cadastrar o produto",
-                status:false
-            })
-        }
+        
         
             //Requisição na tabela do banco para criar relação entre o produto e suas (Categorias e SubCategorias)
             

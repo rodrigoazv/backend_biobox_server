@@ -26,7 +26,7 @@ export class CategoryService{
     async updateProduct(categoryWithProduct: Category){ 
         try{
             const updateUser = await this.categoryRepository.createQueryBuilder()
-            .relation(Product, "product")
+            .relation(Product, "category")
             .of(Category)
             .add(categoryWithProduct.product);
         return updateUser;
