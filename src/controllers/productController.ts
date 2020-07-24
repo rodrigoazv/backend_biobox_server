@@ -72,7 +72,7 @@ class productController {
     public async store(req: Request , res: Response){
 
         const documentFile  = (req as File).file;
-        
+        try{
             const categoryService = new CategoryService();
             const subCategoryService = new SubCategoryService();
             const productTecElementsService = new ProductTecElementsService();
@@ -113,7 +113,12 @@ class productController {
                 message: "Produto cadastrado",
                 status:true
             })
-        
+        }catch{
+            res.status(400).json({
+                message: "Não foi possivel cadastrar o produto",
+                status:false
+            })
+        }
         
             //Requisição na tabela do banco para criar relação entre o produto e suas (Categorias e SubCategorias)
             

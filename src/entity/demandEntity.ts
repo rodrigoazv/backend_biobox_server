@@ -10,7 +10,7 @@ export class Demand{
     @CreateDateColumn()
     createdDate: Date;
 
-    @Column({ nullable: false})
+    @Column({ nullable: false , type: "float"})
     totalPrice: number;
 
     @Column({

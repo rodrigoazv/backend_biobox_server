@@ -122,9 +122,9 @@ class orderDetailController{
             demandNew.shipNumber = number;
             demandNew.totalPrice = req.body.totalPrice;
             //MUDAR VALORES AQUI
-            demandNew.shipValue = 2
-            demandNew.vaucher ="no"
-            demandNew.shipStatus ="enviado"
+            demandNew.shipValue = req.body.shipValue;
+            demandNew.vaucher =req.body.vaucher;
+            demandNew.shipStatus =req.body.shipStatus;
             
 
             await demandService.insertOne(demandNew);
@@ -135,7 +135,7 @@ class orderDetailController{
             })
         }catch{
             res.status(400).json({
-                message:"Não foi possivel realizar o pedido",
+                message: "Não foi possivel enviar",
                 status: false
             })
         }
