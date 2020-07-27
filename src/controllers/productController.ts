@@ -81,7 +81,7 @@ class productController {
             
             //Requisição na tabela productElement Caracteristias para fazer o map e setar todas as caracteristicas dos produtos
             
-            const dadosProduct: productTecElements[] = await Promise.all(req.body.tecElement.map(async (data: string)=> {
+            let dadosProduct: productTecElements[] = await Promise.all(req.body.tecElement.map(async (data: string)=> {
                 let productTec = await productTecElementsService.getByName(data)
                 return productTec;
                 

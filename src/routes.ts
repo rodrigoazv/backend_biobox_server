@@ -31,14 +31,14 @@ const authToken = new verifyHandle();
 const authAdmin = new AuthAdmin();
 //routes for marketing
 routes.post('/mail/lead', mailListController.mailStore)
-routes.get('/mail', mailListController.index);
+routes.get('/mail',authAdmin.verifyToken, mailListController.index);
 //routes for demandSend
 routes.get('/demand/register',verifyToken.verifyToken ,demandController.registerUserAdress);
 //routes for user
 routes.post('/login', loginController.loginGen);
 routes.post('/userfull', verifyToken.verifyToken, userController.storeAdressAndUser);
 routes.post('/user', registerController.storeUser);
-routes.get('/useri/:id', userController.getUserEmail);
+routes.get('/useri/:id', authAdmin.verifyToken, userController.getUserEmail);
 routes.post('/forgot_pass', userController.forgotPassword);
 routes.post('/change_pass', userController.recoveryPassword);
 //order ADD VERIFY TOKEN
@@ -57,9 +57,9 @@ routes.get('/auth/1/user',authToken.verifyToken);
 routes.post('/product/register',multer(multerConfig).single('file'),authAdmin.verifyToken, productController.store);
 routes.delete('/product/:id', authAdmin.verifyToken, productController.delete)
 routes.get('/demand', demandController.index);
-routes.get('/', userController.index);
+routes.get('/', authAdmin.verifyToken, userController.index);
 routes.get('/auth/admin',authAdmin.verifyToken);
-routes.post('/register/admin', adminController.storeUser);
+routes.post('/register/admin', authAdmin.verifyToken, adminController.storeUser);
 routes.post('/login/admin', adminLoginControler.loginGen);
 // Administração categorias registros
 routes.post('/register/category', authAdmin.verifyToken, categoryController.storeCategory);
