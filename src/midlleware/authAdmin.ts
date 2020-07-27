@@ -34,7 +34,7 @@ export class AuthAdmin {
       } catch {
         res.status(404).json({
           auth: false,
-          message: 'invalid token'
+          message: 'Invalid auth'
       }
       )}  
 }
