@@ -33,12 +33,12 @@ const authAdmin = new AuthAdmin();
 routes.post('/mail/lead', mailListController.mailStore)
 routes.get('/mail',authAdmin.verifyToken, mailListController.index);
 //routes for demandSend
-routes.get('/demand/register',verifyToken.verifyToken ,demandController.registerUserAdress);
+routes.get('/demand/index/:id',verifyToken.verifyToken ,demandController.indexByid);
 //routes for user
 routes.post('/login', loginController.loginGen);
 routes.post('/userfull', verifyToken.verifyToken, userController.storeAdressAndUser);
 routes.post('/user', registerController.storeUser);
-routes.get('/useri/:id', authAdmin.verifyToken, userController.getUserEmail);
+routes.get('/useri/:id', userController.getUserEmail);
 routes.post('/forgot_pass', userController.forgotPassword);
 routes.post('/change_pass', userController.recoveryPassword);
 //order ADD VERIFY TOKEN

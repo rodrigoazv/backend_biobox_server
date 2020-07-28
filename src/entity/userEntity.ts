@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert,  OneToOne, JoinColumn, BeforeUpdate } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert,  OneToOne, JoinColumn, BeforeUpdate, OneToMany } from 'typeorm';
 import {Adress} from './adressEntity';
+import { Demand } from './demandEntity';
 
 @Entity()
 export class UserBio{
@@ -79,5 +80,8 @@ export class UserBio{
     })
     @JoinColumn()
     adress: Adress;
+
+    @OneToMany(type => Demand, demand => demand.user)
+    demands: Demand[];
 
 }

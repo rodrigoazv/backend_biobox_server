@@ -99,7 +99,6 @@ class orderDetailController{
             adress.user = userId;
             const adressFull = await adressService.insertOne(adress);
             userId.adress = adressFull
-            const userFull = await userService.updateOneComplet(userId);
             //Inserindo 
             const dados: orderDetail[] = await Promise.all(req.body.products.map(async (data: any)=> {
                 orderDetailNew.produtoId = await productService.getById(data.pid)
@@ -112,7 +111,7 @@ class orderDetailController{
                 
             }))
             demandNew.orders = dados;
-            demandNew.user = userFull;
+            demandNew.user = userId;
             demandNew.shipCity = city;
             demandNew.shipComplement = complement;
             demandNew.shipNeighborhood = neighborhood;
@@ -121,13 +120,14 @@ class orderDetailController{
             demandNew.shipZipcode = zipcode;
             demandNew.shipNumber = number;
             demandNew.totalPrice = req.body.totalPrice;
-            //MUDAR VALORES AQUI
             demandNew.shipValue = req.body.shipValue;
             demandNew.vaucher =req.body.vaucher;
             demandNew.shipStatus =req.body.shipStatus;
-            
+            //Update userDemands
+            userId.demands = demandNew;
 
             await demandService.insertOne(demandNew);
+            await userService.updateOneComplet(userId);
             //demand.orders = [];
             res.status(201).json({
                 message: "Enviado",
