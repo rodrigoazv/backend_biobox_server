@@ -57,7 +57,7 @@ export class UserService {
     return await this.userRepository.findOneOrFail({
       where: {
         id, 
-      }, relations:["adress"]
+      }, relations:["adress", "demands"]
     });
   }
   async getByIdRecovery(id: string):Promise<UserBio | any>{  

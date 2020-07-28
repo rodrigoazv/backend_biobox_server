@@ -16,16 +16,17 @@ class demandController{
             res.status(404).json(err);
         } 
     }
-    public async registerUserAdress(req: Request, res: Response){
+    public async indexByid(req: Request, res: Response){
         try{
-            const userService = new UserService();
-            const userId = await userService.getById(req.userId);
-            if(!userId) return res.json({
-                err: "Usúario não encontrado"
-            })
+            const demandService = new DemandService();
+            const userId = await demandService.getById(req.params.id);
             return res.json(userId)
     }   catch(erro){
-        res.json({erro})
+        res.json({
+            error: erro, 
+            status: false,
+            message: "Não foi possivel encontrar esse pedido"
+        })
     }
         
     }

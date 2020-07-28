@@ -20,7 +20,11 @@ export class DemandService{
             .getMany();
     }
     async getById(id: string){
-        return this.demandRepository.findOneOrFail(id);
+        return this.demandRepository.findOneOrFail({
+            where: {
+              id, 
+            }, relations:["orders"]
+          });
     }
     async insertOne(data: Demand): Promise<Demand>{  
         const newDemand = this.demandRepository.create(data);
