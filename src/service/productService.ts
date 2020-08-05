@@ -24,11 +24,14 @@ export class ProductService{
             }, relations:["category", "subCategory", "element"]
           });;
     }
-    async updateProduct(product: Product){
+    async updateProductImage(product: Product){
         try {
             const updateUser = await this.productRepository.createQueryBuilder("product")
               .update(Product)
-              .set({sellQuantity: product.sellQuantity})
+              .set({
+                photoName: product.photoName,
+                photoUrl: product.photoUrl
+              })
               .where("id = :id", { id: product.id })
               .execute()
             return updateUser;
@@ -36,6 +39,18 @@ export class ProductService{
             return error
           }
     }
+    async updateProduct(product: Product){
+      try {
+          const updateUser = await this.productRepository.createQueryBuilder("product")
+            .update(Product)
+            .set({sellQuantity: product.sellQuantity})
+            .where("id = :id", { id: product.id })
+            .execute()
+          return updateUser;
+        }catch (error){
+          return error
+        }
+  }
     async insertOneProduct(data: Product){
         console.log(data);
         const NewProduct = this.productRepository.create(data);

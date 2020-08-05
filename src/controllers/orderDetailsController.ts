@@ -26,6 +26,12 @@ class orderDetailController{
             
             const userId = await userService.getById(req.userId);
             //Inserindo endereço na tabela adress e criando relação com usuário
+            if(req.body.totalPrice === 0) {
+                return res.status(400).json({
+                    message: "Error: seu valor de pedido tem que ser maior que 0",
+                    status: false
+                })
+            }
             //Inserindo 
             const dados: orderDetail[] = await Promise.all(req.body.products.map(async (data: any)=> {
                 //Atualiza o produto com a quantidade vendida dele 
@@ -75,7 +81,7 @@ class orderDetailController{
     }
     public async sendOrder(req: Request, res: Response){
         const {zipcode, city, state, street, number, complement, neighborhood} = req.body.adress;
-        console.log(req.body)
+        
         try{
             let orderDetailNew = new orderDetail();
             let demandNew = new Demand();
@@ -99,6 +105,13 @@ class orderDetailController{
             adress.user = userId;
             const adressFull = await adressService.insertOne(adress);
             userId.adress = adressFull
+            //caso nao tenha produtos
+            if(req.body.totalPrice === 0) {
+                return res.status(400).json({
+                    message: "Error: seu valor de pedido tem que ser maior que 0",
+                    status: false
+                })
+            }
             //Inserindo 
             const dados: orderDetail[] = await Promise.all(req.body.products.map(async (data: any)=> {
                 orderDetailNew.produtoId = await productService.getById(data.pid)
