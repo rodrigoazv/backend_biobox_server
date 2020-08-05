@@ -68,6 +68,33 @@ class productController {
             })
         }
     }
+    public async updateImageProduct(req: Request, res: Response){
+        const documentFile  = (req as File).file;
+        try{
+            const productService = new ProductService();
+            const product: Product = await productService.getById(req.params.id);
+            
+            const s3 = new aws.S3();
+            s3.deleteObject({
+                Bucket: 'biocateste',
+                Key: product.photoName
+            }).promise()
+
+            product.photoUrl =  documentFile.location;
+            product.photoName = documentFile.key;
+            await productService.updateProductImage(product);
+
+            res.status(200).json({
+                status:true,
+                message: 'EveryThing OK'
+            })
+        }catch(err){
+            res.status(400).json({
+                status: false,
+                message: "Não foi possivel excluir o produto"
+            })
+        }
+    }
 
     public async store(req: Request , res: Response){
 

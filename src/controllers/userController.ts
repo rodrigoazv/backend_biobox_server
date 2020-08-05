@@ -96,7 +96,7 @@ class userController {
             const messageData = {
                 to: `${user.email}`,
                 subject: 'Recuperação de senha',
-                text: `Para recuperar seu login utilize o link : https://biocampeiro-frontend.herokuapp.com/recovery/${token}`,
+                text: `Para recuperar seu login utilize o link : https://biocampeiro.com/recovery/${token}`,
                 html: `<div style="align-items: center; min-width: 100%;">
                 <div style="background-image: url(https://i.imgur.com/zeitEue.jpg); color:38200F;background-repeat:no-repeat;background-position:center;background-size: 100%; height: 600px; width: 600px; margin: 0 auto; ">
                     <div style="align-items: center; width:400px; margin:0 auto; padding-top:100px;">

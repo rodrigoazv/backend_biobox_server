@@ -16,7 +16,6 @@ import productController from './controllers/productController';
 import registerController from './controllers/registerController';
 import loginController from './controllers/loginController';
 import demandController from './controllers/demandController';
-import validateController from './controllers/validateController';
 import categoryController from './controllers/categoryController';
 import orderDetailsController from './controllers/orderDetailsController';
 import mailListController from './controllers/mailListController';
@@ -55,6 +54,7 @@ routes.get('/getcep/:zipcode', adressController.getCep);
 routes.get('/auth/1/user',authToken.verifyToken);
 //ROTAS PRIVADAS ADMINISTRAÇÃO
 routes.post('/product/register',multer(multerConfig).single('file'),authAdmin.verifyToken, productController.store);
+routes.patch('/product/update/:id',multer(multerConfig).single('file'),authAdmin.verifyToken, productController.updateImageProduct);
 routes.delete('/product/:id', authAdmin.verifyToken, productController.delete)
 routes.get('/demand', demandController.index);
 routes.get('/', authAdmin.verifyToken, userController.index);
