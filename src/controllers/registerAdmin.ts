@@ -12,6 +12,7 @@ class adminController {
             let userNew = new AdminBio();
             userNew.email = req.body.email;
             userNew.password = req.body.password;
+            userNew.permision = req.body.permision;
             const userRepository = getManager().getRepository(AdminBio);
             const userService = new AdminService();
             userNew = userRepository.create(userNew);

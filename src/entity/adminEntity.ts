@@ -14,6 +14,11 @@ export class AdminBio{
       nullable:false,
     })
     password: string;
+
+    @Column({
+      nullable:false,
+    })
+    permision: string;
     
     async setPassword(newPassword: string) {
       this.password = await bcrypt.hash(newPassword, 10);

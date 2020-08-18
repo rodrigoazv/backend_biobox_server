@@ -37,15 +37,18 @@ class orderDetailController{
                 //Atualiza o produto com a quantidade vendida dele 
                 let productData = await productService.getById(data.pid)
                 productData.sellQuantity += data.quantity;
+                productData.stock -= data.quantity;
                 await productService.updateProduct(productData);
                 //insere o produto no orderDetails, fica os detalhes dos produtos na demanda
-                orderDetailNew.produtoId = productData;
+                orderDetailNew.product = productData;
+                orderDetailNew.productId = data.pid;
                 orderDetailNew.price = data.price;
                 orderDetailNew.productName = data.name;
                 orderDetailNew.productDescription = data.description;
                 orderDetailNew.quantity = data.quantity;
-                orderDetailNew = await orderDetailService.insertOne(orderDetailNew);
-                return orderDetailNew;
+                orderDetailNew.photoUrl = data.photo;
+                let orderDetailNews = await orderDetailService.insertOne(orderDetailNew);
+                return orderDetailNews;
                 
             }))
             demandNew.orders = dados;
@@ -114,15 +117,24 @@ class orderDetailController{
             }
             //Inserindo 
             const dados: orderDetail[] = await Promise.all(req.body.products.map(async (data: any)=> {
-                orderDetailNew.produtoId = await productService.getById(data.pid)
+                //Atualiza o produto com a quantidade vendida dele 
+                let productData = await productService.getById(data.pid)
+                productData.sellQuantity += data.quantity;
+                productData.stock -= data.quantity;
+                await productService.updateProduct(productData);
+                //insere o produto no orderDetails, fica os detalhes dos produtos na demanda
+                orderDetailNew.product = productData;
+                orderDetailNew.productId = data.pid;
                 orderDetailNew.price = data.price;
                 orderDetailNew.productName = data.name;
                 orderDetailNew.productDescription = data.description;
                 orderDetailNew.quantity = data.quantity;
-                orderDetailNew = await orderDetailService.insertOne(orderDetailNew);
-                return orderDetailNew;
+                orderDetailNew.photoUrl = data.photo;
+                let orderDetailNews = await orderDetailService.insertOne(orderDetailNew);
+                return orderDetailNews;
                 
             }))
+        
             demandNew.orders = dados;
             demandNew.user = userId;
             demandNew.shipCity = city;

@@ -92,10 +92,10 @@ class userController {
             
             user.passTokenRecovery = token;
             await userService.updateOneComplet(user);
-
+                
             const messageData = {
                 to: `${user.email}`,
-                subject: 'Recuperação de senha',
+                subject: 'Recuperacao de senha',
                 text: `Para recuperar seu login utilize o link : https://biocampeiro.com/recovery/${token}`,
                 html: `<div style="align-items: center; min-width: 100%;">
                 <div style="background-image: url(https://i.imgur.com/zeitEue.jpg); color:38200F;background-repeat:no-repeat;background-position:center;background-size: 100%; height: 600px; width: 600px; margin: 0 auto; ">
@@ -105,7 +105,7 @@ class userController {
                             Uma solicitação de recuperação de senha foi realizada para sua conta (${email}) no nosso site. Se você não foi o autor, apenas descarte esse e-mail.</p>
                         <p>Caso tenha perdido sua senha não tem problema</br>
                         pode acessar por este link abaixo:  </p>
-                        <button style="border:none; border-radius: 5px; padding: 10px;  background-color: #91B431;"><a href="https://biocampeiro-frontend.herokuapp.com/recovery/${token}" style="color:FFFAF5; text-decoration: none; font-weight: 600;">Link para recuperação</a></button>
+                        <button style="border:none; border-radius: 5px; padding: 10px;  background-color: #91B431; color: #fff;"><a href="https://biocampeiro-frontend.herokuapp.com/recovery/${token}" style="color:FFFAF5; text-decoration: none; font-weight: 600;">Link para recuperação</a></button>
                         <p>Abraaaço!</br>
                         Equipe Biocampeiro </p>
                     </div>

@@ -53,6 +53,11 @@ export class Product{
     @Column({
         nullable: false
     })
+    howToStock: string;
+
+    @Column({
+        nullable: false
+    })
     stock: number;
 
     @Column({
@@ -66,7 +71,7 @@ export class Product{
     @ManyToOne(type => SubCategory, subCategory => subCategory.products)
     subCategory: SubCategory;
 
-    @OneToMany(type => orderDetail, orderDetail => orderDetail.produtoId)
+    @OneToMany(type => orderDetail, orderDetail => orderDetail.product)
     orderDetails: orderDetail[];
 
     @OneToMany(type => productTecElements, productTecElements => productTecElements.product)

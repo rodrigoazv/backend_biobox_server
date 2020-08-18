@@ -59,7 +59,7 @@ routes.delete('/product/:id', authAdmin.verifyToken, productController.delete)
 routes.get('/demand', demandController.index);
 routes.get('/', authAdmin.verifyToken, userController.index);
 routes.get('/auth/admin',authAdmin.verifyToken);
-routes.post('/register/admin', authAdmin.verifyToken, adminController.storeUser);
+routes.post('/register/admin', adminController.storeUser);
 routes.post('/login/admin', adminLoginControler.loginGen);
 // Administração categorias registros
 routes.post('/register/category', authAdmin.verifyToken, categoryController.storeCategory);
