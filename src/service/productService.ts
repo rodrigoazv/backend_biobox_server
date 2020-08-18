@@ -40,6 +40,7 @@ export class ProductService{
           }
     }
     async updateProduct(product: Product){
+      console.log(product)
       try {
           const updateUser = await this.productRepository.createQueryBuilder("product")
             .update(Product)

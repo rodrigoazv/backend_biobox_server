@@ -124,6 +124,7 @@ class productController {
             productNew.photoName = documentFile.key;
             productNew.category = categoryStore;
             productNew.stock = req.body.stock;
+            productNew.howToStock = req.body.howToStock;
             productNew.subCategory = subCategoryStore;
             productNew.element = dadosProduct;
             productNew.brand = req.body.brand;

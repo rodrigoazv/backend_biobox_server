@@ -23,8 +23,7 @@ export class OrderDetailService{
         return this.orderDetailRepository.findOneOrFail(id);
     }
     async insertOne(data: orderDetail): Promise<orderDetail>{
-        
-        console.log('Dados de envio', data);
+
         const neworderDetailService = this.orderDetailRepository.create(data);
         return await this.orderDetailRepository.save(neworderDetailService);  
         

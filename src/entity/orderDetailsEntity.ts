@@ -6,8 +6,11 @@ export class orderDetail{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Column({nullable: false})
+    productId: string;
+
     @ManyToOne(type => Product, product => product.orderDetails)
-    produtoId: Product;
+    product: Product;
 
     @Column({ nullable: false})
     quantity: number;
@@ -17,6 +20,9 @@ export class orderDetail{
 
     @Column({nullable: false})
     productDescription: string;
+
+    @Column({nullable:false})
+    photoUrl: string;
 
     @Column({ 
         nullable: false, 

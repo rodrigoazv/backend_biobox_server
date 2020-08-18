@@ -1,7 +1,5 @@
 import SES from 'aws-sdk/clients/ses';
-
-import config from '../config/config';
-
+// Criação do MiddleWare de emails, nesta pagina fica os emails
 export class MailSend{
     private client: SES;
 
