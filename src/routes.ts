@@ -59,9 +59,16 @@ routes.delete('/product/:id', authAdmin.verifyToken, productController.delete)
 routes.get('/demand', demandController.index);
 routes.get('/', authAdmin.verifyToken, userController.index);
 routes.get('/auth/admin',authAdmin.verifyToken);
-routes.post('/register/admin', adminController.storeUser);
+routes.post('/register/admin', authAdmin.verifyToken, adminController.storeUser);
 routes.post('/login/admin', adminLoginControler.loginGen);
-// Administração categorias registros
+/*Rotas Administração
+ @GET Admin
+ @POST Admin
+ @Patch Admin
+ @Delete admin
+ Necessario uso de autenticação para GET importantes e todos os put and patchs and delets
+*/
+routes.patch('/demand/update', authAdmin.verifyToken, demandController.updateStatus);
 routes.post('/register/category', authAdmin.verifyToken, categoryController.storeCategory);
 routes.post('/register/subcategory', authAdmin.verifyToken, categoryController.storeSubCategory);
 routes.post('/register/productelement', multer(multerConfig).single('file'), authAdmin.verifyToken, categoryController.storeProductTecElement);

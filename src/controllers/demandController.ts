@@ -30,7 +30,24 @@ class demandController{
     }
         
     }
-    
+    public async updateStatus(req: Request, res: Response){
+        try{
+            const demandService = new DemandService();
+            const demand: Demand = await demandService.getById(req.body.shipId);
+            demand.shipStatus = req.body.shipStatus;
+            demand.shipExpectedDate = req.body.shipExpectedDate;
+            await demandService.updateField(demand);
+            res.status(200).json({
+                status: true,
+                message: "Ok"
+            })
+        }catch{
+            res.status(400).json({
+                status: false,
+                message: "Não foi possivel atualizar"
+            })
+        }
+    }
 }
 
 export default new demandController();

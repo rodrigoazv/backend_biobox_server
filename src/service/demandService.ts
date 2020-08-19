@@ -19,6 +19,18 @@ export class DemandService{
             .leftJoinAndSelect("demand.orders", "orders")
             .getMany();
     }
+    async updateField(demand: Demand){
+        try{
+        const updateDemand = await this.demandRepository.createQueryBuilder('demand')
+        .update(Demand)
+        .set({shipStatus: demand.shipStatus, shipExpectedDate: demand.shipExpectedDate})
+        .where("id = :id", {id: demand.id})
+        .execute();
+        return updateDemand;
+    }catch(error){
+        return error
+    }
+    }
     async getById(id: string){
         return this.demandRepository.findOneOrFail({
             where: {
