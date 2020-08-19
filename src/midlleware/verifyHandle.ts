@@ -9,7 +9,6 @@ export class verifyHandle {
 
     verifyToken (req: Request, res: Response, next: NextFunction){
         const pickToken = <string>req.header('authorization');
-        console.log(req.header('authorization'))
         if(!pickToken) {
           return res.status(403).json({
           auth: false,

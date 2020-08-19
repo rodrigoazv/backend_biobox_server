@@ -19,6 +19,12 @@ export class Demand{
     })
     shipValue: number;
 
+    @Column({nullable: true})
+    shipExpectedDate: Date;
+
+    @Column({nullable: true})
+    shipExpectedDateLimit: Date;
+    
     @Column({ nullable: false})
     vaucher: string;
 
