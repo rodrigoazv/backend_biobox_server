@@ -54,7 +54,7 @@ routes.get('/getcep/:zipcode', adressController.getCep);
 routes.get('/auth/1/user',authToken.verifyToken);
 //ROTAS PRIVADAS ADMINISTRAÇÃO
 routes.post('/product/register',multer(multerConfig).single('file'),authAdmin.verifyToken, productController.store);
-routes.patch('/product/update/:id',multer(multerConfig).single('file'),authAdmin.verifyToken, productController.updateImageProduct);
+routes.patch('/product/update', authAdmin.verifyToken, productController.updateQuantity);
 routes.delete('/product/:id', authAdmin.verifyToken, productController.delete)
 routes.get('/demand', demandController.index);
 routes.get('/', authAdmin.verifyToken, userController.index);
