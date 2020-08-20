@@ -49,12 +49,19 @@ class productController {
         try{
             const productService = new ProductService();
             const product: Product = await productService.getById(req.params.id);
-            
             const s3 = new aws.S3();
-            s3.deleteObject({
-                Bucket: 'biocateste',
-                Key: product.photoName
-            }).promise()
+            try{
+                s3.deleteObject({
+                    Bucket: 'biocateste',
+                    Key: product.photoName
+                })
+            }catch{
+                res.status(400).json({
+                    status: false,
+                    message:'Não foi possivel excluir foto do bucket'
+                })
+            }
+            
             await productService.deletProduct(req.params.id);
 
             res.status(200).json({
@@ -62,33 +69,27 @@ class productController {
                 message: 'EveryThing OK'
             })
         }catch(err){
+            console.log(err)
             res.status(400).json({
                 status: false,
                 message: "Não foi possivel excluir o produto"
             })
         }
     }
-    public async updateImageProduct(req: Request, res: Response){
-        const documentFile  = (req as File).file;
+    public async updateQuantity(req: Request, res: Response){
         try{
             const productService = new ProductService();
-            const product: Product = await productService.getById(req.params.id);
+            const product: Product = await productService.getById(req.body.id);
+            product.stock = req.body.stock;
             
-            const s3 = new aws.S3();
-            s3.deleteObject({
-                Bucket: 'biocateste',
-                Key: product.photoName
-            }).promise()
-
-            product.photoUrl =  documentFile.location;
-            product.photoName = documentFile.key;
-            await productService.updateProductImage(product);
+            await productService.updateStock(product);
 
             res.status(200).json({
                 status:true,
                 message: 'EveryThing OK'
             })
         }catch(err){
+            console.log(err)
             res.status(400).json({
                 status: false,
                 message: "Não foi possivel excluir o produto"
@@ -107,7 +108,6 @@ class productController {
             let subCategoryStore: SubCategory = await subCategoryService.getByName(req.body.subcategory)
             
             //Requisição na tabela productElement Caracteristias para fazer o map e setar todas as caracteristicas dos produtos
-            
             let dadosProduct: productTecElements[] = await Promise.all(req.body.tecElement.map(async (data: string)=> {
                 let productTec = await productTecElementsService.getByName(data)
                 return productTec;
@@ -130,7 +130,6 @@ class productController {
             productNew.brand = req.body.brand;
 
             const productService = new ProductService();
-            const productRepository  = getManager().getRepository(Product);
             productNew = await productService.insertOneProduct(productNew);
  
 
@@ -141,7 +140,8 @@ class productController {
                 message: "Produto cadastrado",
                 status:true
             })
-        }catch{
+        }catch(error){
+            console.log(error)
             res.status(400).json({
                 message: "Não foi possivel cadastrar o produto",
                 status:false

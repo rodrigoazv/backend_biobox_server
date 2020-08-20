@@ -1,6 +1,6 @@
 import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
 import { Product } from './productEntity';
-import { ManyToOne } from 'typeorm';
+import { ManyToMany } from 'typeorm';
 
 @Entity()
 export class productTecElements{
@@ -17,6 +17,6 @@ export class productTecElements{
     })
     iconUrl: string;
 
-    @ManyToOne(type => Product, product => product.element)
-    product: Product;
+    @ManyToMany(type => Product)
+    product: Product[];
 }

@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToOne} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, ManyToOne, JoinTable} from 'typeorm';
 import {orderDetail} from './orderDetailsEntity';
 import { productTecElements } from './productTecElementsEntity';
 import { Category } from './categoryEntity';
@@ -74,6 +74,7 @@ export class Product{
     @OneToMany(type => orderDetail, orderDetail => orderDetail.product)
     orderDetails: orderDetail[];
 
-    @OneToMany(type => productTecElements, productTecElements => productTecElements.product)
+    @ManyToMany(type => productTecElements)
+    @JoinTable()
     element: productTecElements[];
 }

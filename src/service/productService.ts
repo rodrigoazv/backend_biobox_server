@@ -24,13 +24,12 @@ export class ProductService{
             }, relations:["category", "subCategory", "element"]
           });;
     }
-    async updateProductImage(product: Product){
+    async updateStock(product: Product){
         try {
             const updateUser = await this.productRepository.createQueryBuilder("product")
               .update(Product)
               .set({
-                photoName: product.photoName,
-                photoUrl: product.photoUrl
+                stock: product.stock,
               })
               .where("id = :id", { id: product.id })
               .execute()
@@ -53,11 +52,11 @@ export class ProductService{
         }
   }
     async insertOneProduct(data: Product){
-        console.log(data);
         const NewProduct = this.productRepository.create(data);
         return await this.productRepository.save(NewProduct);
     }
     async deletProduct(id: string){
+        console.log(id)
         return await this.productRepository.delete(id);
     }
 }
