@@ -43,7 +43,7 @@ export class ProductService{
       try {
           const updateUser = await this.productRepository.createQueryBuilder("product")
             .update(Product)
-            .set({sellQuantity: product.sellQuantity})
+            .set({sellQuantity: product.sellQuantity, stock:product.stock})
             .where("id = :id", { id: product.id })
             .execute()
           return updateUser;
