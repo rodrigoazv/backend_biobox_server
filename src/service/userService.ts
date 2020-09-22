@@ -4,7 +4,6 @@ import { UserBio } from "../entity/userEntity";
 
 export class UserService {
    userRepository: Repository<UserBio>;
-
    constructor(){
        this.userRepository = getManager().getRepository(UserBio);
    }
